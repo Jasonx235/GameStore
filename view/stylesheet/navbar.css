@@ -1,0 +1,30 @@
+.navbar {
+    text-decoration: none;
+    background-color: black;
+    color: red;
+}
+
+a.link {
+    color: red !important;
+}
+
+a.visited {
+    color: red !important;
+}
+
+a {
+    color: red !important;
+}
+
+a.active {
+    border: 1px solid red !important;
+    color: black !important;
+    background-color: red !important;
+    border-radius: 1px;
+}
+
+.nav-item:hover {
+    color: red;
+    transition: transform .2s;
+    transform: scale(1.1);
+}

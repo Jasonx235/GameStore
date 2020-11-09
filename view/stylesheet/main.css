@@ -1,0 +1,42 @@
+html, body {
+    background-color: #282828;
+    overflow-x: hidden;
+}
+
+.brand {
+    font-size: 6vw;
+    margin-top: 30px;
+    position: relative;
+    color: #DC143C;
+}
+
+img {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    max-width:1000px;
+    max-height:1000px;
+    width: auto;
+    height: auto;
+    border: 10px solid #8B0000!important;
+}
+
+.buttons {
+    text-decoration: none;
+    float:left;
+    margin: 20px;
+    padding: 25px;
+    margin-right:5px;
+    font-size: 1.25rem;
+    border-radius: 25px;
+    border: 5px solid #8B0000;
+ }
+
+ .buttons:hover {
+    background-color: #8B0000;
+    color: black !important;
+    text-decoration: none;
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
+ }
