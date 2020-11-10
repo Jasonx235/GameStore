@@ -14,11 +14,8 @@ img {
     margin-top: 10px;
     margin-bottom: 10px;
     display: block;
-    max-width:1000px;
-    max-height:1000px;
-    width: auto;
+    max-width: 100%;
     height: auto;
-    border: 10px solid #8B0000!important;
 }
 
 .buttons {
@@ -29,11 +26,11 @@ img {
     margin-right:5px;
     font-size: 1.25rem;
     border-radius: 25px;
-    border: 5px solid #8B0000;
+    border: 5px solid #ff1616;
  }
 
  .buttons:hover {
-    background-color: #8B0000;
+    background-color: #ff1616;
     color: black !important;
     text-decoration: none;
     -webkit-transition: background 0.3s ease-in-out;

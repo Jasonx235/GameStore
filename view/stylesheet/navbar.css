@@ -28,3 +28,13 @@ a.active {
     transition: transform .2s;
     transform: scale(1.1);
 }
+
+.navbar-brand:hover {
+    color: black !important;
+    transition: transform .2s;
+    transform: scale(1.1);
+    background-color: red !important; 
+    border-radius: 15px !important;
+    padding-left: 5px;
+    padding-right: 5px;
+}

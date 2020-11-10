@@ -13,7 +13,7 @@
 
         <link
         rel="stylesheet"
-        href="stylesheet/register.css"
+        href="stylesheet/login_reg.css"
         />
 
         <title>Sign Up</title>
@@ -22,7 +22,7 @@
 
     <body>
         <div class="container">
-        <form id="contact" action="" method="post">
+        <form id="form" action="" method="post">
             <h3>Sign Up</h3>
             <fieldset>
                 <input placeholder="First Name" type="text" tabindex="1" required autofocus>
@@ -40,11 +40,14 @@
                 <input placeholder="Password" type="password" tabindex="3" required>
             </fieldset>
             <fieldset>
-                <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Sign Up</button>
+                <button name="submit" type="submit" id="form-submit" data-submit="...Sending">Sign Up</button>
             </fieldset>
+
+            <h6><a href="index.php">Back<a></h6>
         </form>
         </div>
 
+        <?php include 'components/footer.html';?>
 
     </body>
 
