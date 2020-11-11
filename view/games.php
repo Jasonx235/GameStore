@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 
+<?php
+require("config.php");
+if(!isset($_SESSION['source']))
+{
+	header("Location:index.php");
+}
+
+?>
+
 <html lang="en" class="text-primary">
     <head>
         <meta charset="utf-8" />

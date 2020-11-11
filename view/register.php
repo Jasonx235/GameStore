@@ -24,20 +24,34 @@
         <div class="container">
         <form id="form" action="" method="post">
             <h3>Sign Up</h3>
+            <h4>Personal Information:</h4>
             <fieldset>
                 <input placeholder="First Name" type="text" tabindex="1" required autofocus>
             </fieldset>
             <fieldset>
-                <input placeholder="Last Name" type="text" tabindex="1" required autofocus>
+                <input placeholder="Last Name" type="text" tabindex="2" required autofocus>
             </fieldset>
             <fieldset>
-                <input placeholder="Your Email Address" type="email" tabindex="2" required>
+                <input placeholder="Your Email Address" type="email" tabindex="3" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Your Phone Number" type="tel" tabindex="3" required>
+                <input placeholder="Your Phone Number" type="tel" tabindex="4" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Password" type="password" tabindex="3" required>
+                <input placeholder="Password" type="password" tabindex="5" required>
+            </fieldset>
+            <h4>Shipping Address:</h4>
+            <fieldset>
+                <input placeholder="Street" type="text" tabindex="6" required>
+            </fieldset>
+            <fieldset>
+                <input placeholder="City" type="text" tabindex="7" required>
+            </fieldset>
+            <fieldset>
+                <input placeholder="State" type="text" tabindex="8" required>
+            </fieldset>
+            <fieldset>
+                <input placeholder="ZIP Code" type="text" tabindex="8" required>
             </fieldset>
             <fieldset>
                 <button name="submit" type="submit" id="form-submit" data-submit="...Sending">Sign Up</button>
