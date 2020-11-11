@@ -26,13 +26,13 @@
     $query = "INSERT";
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    //invalid email
+    //invalid email message
     }
     else if($password != $passwordCHECK){
-    //Passwords do not match
+    //Passwords do not match message
     }
     else if(!preg_match($patternPass, $password)){
-    //Password do not have correct format
+    //Password do not have correct format message
     }
     else{
       //Checking if Aleady signed up
@@ -42,17 +42,17 @@
       $stmy->bind_result($email);
       $stmt->store_result();
       if($stmt->num_rows>0){
-        //Aready Sign UP
+        //Aready Sign UP message
       }
       else{
       $stmt = $conn->prepare($query); 
       //Order can be changed
       $stmt->bind_param("ssssss", $firstname, $lastname, $phoneNumber, $phoneNumber, $address, $email, $password);
       if($stmt->execute()){
-        //Sucessful
+        //Sucessful message
       }
       else{
-        //Unsuccessful
+        //Unsuccessful message
       }
 
 
