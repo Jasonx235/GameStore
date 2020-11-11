@@ -20,32 +20,14 @@
     $password = cleanInput($_POST['password']);
 
     //all patterns needed
-    $patternPass = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$^";
-    $patternEmail;// needs to be done
+    $patternPass = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$";
+    //Minimum eight characters, at least one letter, one number and one special character:
+    
+    $patternUsername = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
+    //5 to 20 characers
+    //all alphanumeric
+    //allow (.), (_), (-), cant be at begining or end, no consecutive
 
-    //Tentative to change
-    if(empty($firstname)) {
-      $errors['firstname'] = "First Name Input Required";
-    }
-    if(empty($lastname)) {
-        $errors['lastname'] = "Last Name Input Required";
-      }
-    if(empty($phoneNumber)) {
-        $errors['phoneNumber'] = "Phone Number Input Required";
-    }
-    if(empty($address)) {
-        $errors['address'] = "Address Input Required";
-      }
-    if(empty($email)) {
-        $errors['email'] = "Email Input Required";
-    }
-    if(empty($password)) {
-        $errors['password'] = "Password Input Required";
-    }
-    elseif(!preg_match($pattern, $password)){
-        $errors['password'] = "Please follow Pasword formatting";
-    }
-    else
-    $bool = true;
-    }
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL))&&!preg_match($patternUsername)
+   
     ?>
