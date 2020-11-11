@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
 <?php
+// require("config.php");
+// if(!isset($_SESSION['source']))
+// {
+// 	header("Location:index.php");
+// }
 require("config.php");
-if(!isset($_SESSION['source']))
-{
-	header("Location:index.php");
-}
-
 ?>
 
 <html lang="en" class="text-primary">
@@ -43,8 +43,7 @@ if(!isset($_SESSION['source']))
         <?php include 'components/navbar.php';?>
 
         <div class="container">
-
-            
+               
 
         </div>
 

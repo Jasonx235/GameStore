@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$SERVER = '127.0.0.1';
+$SERVER = 'localhost';
 $USER = 'root';
 $PASS = '';
 $DATABASE = 'gamersstore';

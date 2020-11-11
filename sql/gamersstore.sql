@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 08, 2020 at 11:36 PM
+-- Host: localhost
+-- Generation Time: Nov 11, 2020 at 09:45 PM
 -- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `products` (
-  `PRODUCT_ID` char(6) NOT NULL,
+  `PRODUCT_ID` int(6) NOT NULL,
   `NAME` char(15) DEFAULT NULL,
   `PRICE` decimal(6,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -38,7 +38,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`PRODUCT_ID`, `NAME`, `PRICE`) VALUES
-('090807', 'PS5', '399.99');
+(90807, 'PS5', '399.99');
 
 -- --------------------------------------------------------
 
@@ -47,10 +47,10 @@ INSERT INTO `products` (`PRODUCT_ID`, `NAME`, `PRICE`) VALUES
 --
 
 CREATE TABLE `reviews` (
-  `REVIEW_ID` char(3) NOT NULL,
-  `PRODUCT_ID` char(6) DEFAULT NULL,
+  `REVIEW_ID` int(4) NOT NULL,
+  `PRODUCT_ID` int(6) DEFAULT NULL,
   `REVIEW_INFO` char(50) DEFAULT NULL,
-  `USER_ID` char(4) DEFAULT NULL
+  `USER_ID` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -58,7 +58,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`REVIEW_ID`, `PRODUCT_ID`, `REVIEW_INFO`, `USER_ID`) VALUES
-('1', '090807', 'Product is overheating', '0908');
+(1, 90807, 'Product is overheating', 908);
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,7 @@ INSERT INTO `reviews` (`REVIEW_ID`, `PRODUCT_ID`, `REVIEW_INFO`, `USER_ID`) VALU
 --
 
 CREATE TABLE `shopping_cart` (
-  `SHOPPINGCART_ID` char(5) NOT NULL,
+  `SHOPPINGCART_ID` int(5) NOT NULL,
   `USER_ID` char(4) DEFAULT NULL,
   `PRODUCT_ID` char(6) DEFAULT NULL,
   `TOTAL` decimal(8,2) DEFAULT NULL
@@ -78,7 +78,7 @@ CREATE TABLE `shopping_cart` (
 --
 
 INSERT INTO `shopping_cart` (`SHOPPINGCART_ID`, `USER_ID`, `PRODUCT_ID`, `TOTAL`) VALUES
-('1234', '0908', '090807', '399.99');
+(1234, '0908', '090807', '399.99');
 
 -- --------------------------------------------------------
 
@@ -87,7 +87,7 @@ INSERT INTO `shopping_cart` (`SHOPPINGCART_ID`, `USER_ID`, `PRODUCT_ID`, `TOTAL`
 --
 
 CREATE TABLE `users` (
-  `USER_ID` char(4) NOT NULL,
+  `USER_ID` int(5) NOT NULL,
   `PASSWORD` varchar(10) NOT NULL,
   `FIRST_NAME` char(15) DEFAULT NULL,
   `LAST_NAME` char(15) DEFAULT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`USER_ID`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE_NUM`, `STREET`, `CITY`, `STATE`, `ZIP`, `EMAIL`) VALUES
-('0908', 'test', 'Daniel', 'Dolan', '9178856098', '552 Amboy Road', 'Staten Island', 'NY', '10309', 'test@gmail.com');
+(908, 'test', 'Daniel', 'Dolan', '9178856098', '552 Amboy Road', 'Staten Island', 'NY', '10309', 'test@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -133,6 +133,34 @@ ALTER TABLE `shopping_cart`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`USER_ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90808;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `REVIEW_ID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  MODIFY `SHOPPINGCART_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1235;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `USER_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=909;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

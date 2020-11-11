@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<?php
+
+if(isset($_SESSION['source']))
+{
+	header("Location:profile.php");
+	exit();
+}
+
+?>
 <html lang="en" class="text-primary">
     <head>
         <meta charset="utf-8" />
@@ -11,8 +20,8 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-        <link
-        rel="stylesheet"
+        <link 
+        rel = "stylesheet"
         href="stylesheet/login_reg.css"
         />
 
@@ -22,40 +31,57 @@
 
     <body>
         <div class="container">
-        <form id="form" action="" method="post">
+        <form id="form" action="signup.php" method="post">
             <h3>Sign Up</h3>
             <h4>Personal Information:</h4>
             <fieldset>
-                <input placeholder="First Name" type="text" tabindex="1" required autofocus>
+                <input name="firstname" placeholder="First Name" type="text" tabindex="1" required autofocus>
             </fieldset>
             <fieldset>
-                <input placeholder="Last Name" type="text" tabindex="2" required autofocus>
+                <input name="lastname" placeholder="Last Name" type="text" tabindex="2" required autofocus>
             </fieldset>
             <fieldset>
-                <input placeholder="Your Email Address" type="email" tabindex="3" required>
+                <input name="email" placeholder="Your Email Address" type="email" tabindex="3" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Your Phone Number" type="tel" tabindex="4" required>
+                <input name="phoneNumber" placeholder="Your Phone Number" type="tel" tabindex="4" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Password" type="password" tabindex="5" required>
+                <input name="password" placeholder="Password" type="password" tabindex="5" required>
+            </fieldset>
+            <small class="form-text text-muted">Minimum eight characters, at least one letter, one number and one special character</small>
+            <fieldset>
+                <input name="passwordCHECK" placeholder="Retype password" type="password" tabindex="6" required>
             </fieldset>
             <h4>Shipping Address:</h4>
             <fieldset>
-                <input placeholder="Street" type="text" tabindex="6" required>
+                <input name="street" placeholder="Street" type="text" tabindex="7" required>
             </fieldset>
             <fieldset>
-                <input placeholder="City" type="text" tabindex="7" required>
+                <input  name="city" placeholder="City" type="text" tabindex="8" required>
             </fieldset>
             <fieldset>
-                <input placeholder="State" type="text" tabindex="8" required>
+                <input name="state" placeholder="State" type="text" tabindex="9" required>
             </fieldset>
             <fieldset>
-                <input placeholder="ZIP Code" type="text" tabindex="8" required>
+                <input name="zip" placeholder="ZIP Code" type="text" tabindex="10" required>
             </fieldset>
             <fieldset>
                 <button name="submit" type="submit" id="form-submit" data-submit="...Sending">Sign Up</button>
             </fieldset>
+
+            <?php 
+
+			if(count($errors) > 0):
+		    ?>
+				<?php 
+					foreach($errors as $e => $message):
+				?>
+					<div class="alert alert-danger"> <?php echo $message; ?> </div>
+				<?php
+					endforeach;
+				?>
+            <?php endif; ?>
 
             <h6><a href="index.php">Back<a></h6>
         </form>
