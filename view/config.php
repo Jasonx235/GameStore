@@ -1,15 +1,18 @@
 <?php
 
 session_start();
-$SERVER = 'localhost';
-$USER = 'root';
-$PASS = '';
-$DATABASE = 'gamersstore';
-    
- 
-$conn = new mysqli($SERVER, $USER, $PASS, $DATABASE);
+DEFINE('SERVER', 'localhost');
+DEFINE('USER', 'root');
+DEFINE('PASS', '');
+DEFINE('DATABASE', 'gamersstore');
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try{
+    $conn = new mysqli(SERVER, USER, PASS, DATABASE);
+    $conn->set_charset("utf8mb4");
+} catch(Execption $e){
+    error_log($e->getMessage());
+    exit("Error connecting to database.");
 }
+
 ?>

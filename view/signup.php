@@ -1,11 +1,11 @@
 <?php
     $errors = [];
+    session_start();
     if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Sessions needs to be added
       
       require("config.php");
-
-      $_SESSION['source'] = NULL;
+      var_dump($_POST);
 
       function cleanInput($data){ //sanitize data 
           $data = trim($data);
@@ -24,8 +24,9 @@
       $email = cleanInput($_POST['email']);
       $password = cleanInput($_POST['password']);
       $passwordCHECK = cleanInput($_POST['passwordCHECK']);
+
       //all patterns needed
-      $patternPass = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
+     $patternPass = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
       //Minimum eight characters, at least one letter, one number and one special character:
       
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -33,7 +34,7 @@
         
       }
 
-      if($password != $passwordCHECK){
+      if($password !== $passwordCHECK){
         $errors['rePass'] = "Password doesn't match!";
       
       }
@@ -55,28 +56,26 @@
         $errors['signedUP'] = "Account already exits!";
       }
 
-      if(count($errors) == 0){
+      if(count($errors) === 0){
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         $query = "INSERT INTO users(PASSWORD, FIRST_NAME, LAST_NAME, PHONE_NUM, STREET, CITY, STATE, ZIP, EMAIL) VALUES(?,?,?,?,?,?,?,?,?)";
-
-        $stmt = $conn->prepare($query); 
+      
+        $stmt2 = $conn->prepare($query); 
         //Order can be changed
-        $stmt->bind_param('sssssssss', $password, $firstname, $lastname, $phoneNumber, $street, $city, $state, $zip, $email);
-        if($stmt->execute()) {
+        $stmt2->bind_param('sssssssss', $password, $firstname, $lastname, $phoneNumber, $street, $city, $state, $zip, $email);
+        
+        if($stmt2->execute()) {
+         
+          $user_id = $conn->insert_id;
+          $_SESSION['id'] = $user_id;
           $_SESSION['firstname'] = $firstname; // setting the session variables
           $_SESSION['lastname'] = $lastname;
-          $_SESSION['email'] = $email;
-          $_SESSION['phone'] = $phoneNumber;
-          $_SESSION['password'] = $password;
-          $_SESSION["street"] = $street;
-          $_SESSION["city"] = $city;
-          $_SESSION["state"] = $state;
-          $_SESSION["zip"] = $zip;
-          $_SESSION["errors"] = $errors;
           $_SESSION['source'] = "signUp";
 
           header("Location:profile.php");
-          exit();
+          
         }
         else {
           $errors['db_error'] = "Database error";
