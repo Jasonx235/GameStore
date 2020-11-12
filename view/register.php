@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php
 
+include 'signup.php';
+
 if(isset($_SESSION['source']))
 {
 	header("Location:profile.php");
@@ -31,7 +33,7 @@ if(isset($_SESSION['source']))
 
     <body>
         <div class="container">
-        <form id="form" action="signup.php" method="post">
+        <form id="form" action="register.php" method="post">
             <h3>Sign Up</h3>
             <h4>Personal Information:</h4>
             <fieldset>
@@ -67,7 +69,7 @@ if(isset($_SESSION['source']))
                 <input name="zip" placeholder="ZIP Code" type="text" tabindex="10" required>
             </fieldset>
             <fieldset>
-                <button name="submit" type="submit" id="form-submit" data-submit="...Sending">Sign Up</button>
+                <button name="submit" type="submit" id="form-submit" >Sign Up</button>
             </fieldset>
 
             <?php 

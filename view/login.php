@@ -31,7 +31,7 @@
                 <input placeholder="Password" type="password" tabindex="2" required>
             </fieldset>
             <fieldset>
-                <button name="submit" type="submit" id="form-submit" data-submit="...Sending">Login</button>
+                <button name="submit" type="submit" id="form-submit">Login</button>
             </fieldset>
 
             <h6><a href="index.php">Back<a></h6>

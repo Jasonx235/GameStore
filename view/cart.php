@@ -4,7 +4,8 @@
 require("config.php");
 if(!isset($_SESSION['source']))
 {
-	header("Location:index.php");
+    header("Location:index.php");
+    exit();
 }
 
 ?>
