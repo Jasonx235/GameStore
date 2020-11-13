@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <?php
-
 include 'signin.php';
 
 if(isset($_SESSION['source']))
@@ -37,10 +36,10 @@ if(isset($_SESSION['source']))
         <form id="form" action="login.php" method="post">
             <h3>Login</h3>
             <fieldset>
-                <input name = "email" placeholder="Your Email Address" type="email" tabindex="2" required>
+                <input name ="email" placeholder="Your Email Address" type="email" tabindex="2" required>
             </fieldset>
             <fieldset>
-                <input name = "password" placeholder="Password" type="password" tabindex="2" required>
+                <input name ="password" placeholder="Password" type="password" tabindex="2" required>
             </fieldset>
             <fieldset>
                 <button name="submit" type="submit" id="form-submit">Login</button>

@@ -1,21 +1,22 @@
 <?php
 
 $errors = [];
-session_start();
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
-    $require("config.php");
-
+    require("config.php");
+    
     function cleanInput($data){ //sanitize data 
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
-    $loginQuery = "SELECT email, password FROM users WHERE email = ? AND password = ? LIMIT 1";
-    $email = cleanInput(_POST['email']);
-    $password = cleanInput(_POST['password']);
+    
+    $email = cleanInput($_POST['email']);
+    $password = cleanInput($_POST['password']);
+    $loginQuery = "SELECT * FROM users WHERE email = ? LIMIT 1";
 
     if(empty($email)){
         $errors['email'] = "Username Required";
@@ -28,45 +29,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(count($errors)===0){
 
     $stmt = $conn->prepare($loginQuery);
-    $stmt = bind_param('ss', $email, $password);
-    $stmt = store_result();
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+
     $return = $stmt->get_result();
     $user = $return->fetch_assoc();
-
-    $hash_pass = $user['password'];
-    $user_id = $user['id'];
-    //Verifying Email
-    if(password_verify($password, $hash_pass)){ 
     
+    //Verifying Email
+    if(password_verify($password, $user['password'])){ 
+        $user_id = $user['id'];
         $_SESSION['id'] = $user_id;
         $_SESSION['email'] = $email;
-        $_SESSION['source'] = "login";
+        $_SESSION['source'] = "logIn";
         header("Location:profile.php");
         exit();       
     }
     else{
-        $error['invalidEP'] = "Invalid Email or Invalid Password or Invali Email and Password!"
+        $errors['login'] = "Invalid Credentials";
     }
-    $stmt->close()
 }
 else{
     
     $error['dbError'] = "Database Error!";
     exit();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 ?>
