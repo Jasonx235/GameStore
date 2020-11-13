@@ -2,7 +2,7 @@
     $errors = [];
     session_start();
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-    //Sessions needs to be added
+    
       
       require("config.php");
       var_dump($_POST);
@@ -63,7 +63,7 @@
         $query = "INSERT INTO users(PASSWORD, FIRST_NAME, LAST_NAME, PHONE_NUM, STREET, CITY, STATE, ZIP, EMAIL) VALUES(?,?,?,?,?,?,?,?,?)";
       
         $stmt2 = $conn->prepare($query); 
-        //Order can be changed
+        
         $stmt2->bind_param('sssssssss', $password, $firstname, $lastname, $phoneNumber, $street, $city, $state, $zip, $email);
         
         if($stmt2->execute()) {
