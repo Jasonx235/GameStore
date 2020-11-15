@@ -5,7 +5,6 @@
     
       
       require("config.php");
-      var_dump($_POST);
 
       function cleanInput($data){ //sanitize data 
           $data = trim($data);
@@ -69,9 +68,10 @@
         if($stmt2->execute()) {
          
           $user_id = $conn->insert_id;
-          $_SESSION['id'] = $user_id;
+          $_SESSION['user_id'] = $user_id;
           $_SESSION['firstname'] = $firstname; // setting the session variables
           $_SESSION['lastname'] = $lastname;
+          $_SESSION['email'] = $email;
           $_SESSION['source'] = "signUp";
 
           header("Location:profile.php");

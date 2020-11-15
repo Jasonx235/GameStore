@@ -1,6 +1,7 @@
 <?php
 
 $errors = [];
+session_start();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -16,7 +17,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     $email = cleanInput($_POST['email']);
     $password = cleanInput($_POST['password']);
-    $loginQuery = "SELECT * FROM users WHERE email = ? LIMIT 1";
+    $loginQuery = "SELECT user_id, password FROM users WHERE email = ? LIMIT 1";
 
     if(empty($email)){
         $errors['email'] = "Username Required";
@@ -37,12 +38,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     //Verifying Email
     if(password_verify($password, $user['password'])){ 
-        $user_id = $user['id'];
-        $_SESSION['id'] = $user_id;
+        $user_id = $user['user_id'];
+        $_SESSION['user_id'] = $user_id;
         $_SESSION['email'] = $email;
         $_SESSION['source'] = "logIn";
-        header("Location:profile.php");
-        exit();       
+        header("Location:profile.php");  
     }
     else{
         $errors['login'] = "Invalid Credentials";
