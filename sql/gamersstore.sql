@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 11, 2020 at 09:45 PM
+-- Generation Time: Nov 16, 2020 at 12:44 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `products` (
   `PRODUCT_ID` int(6) NOT NULL,
-  `NAME` char(15) DEFAULT NULL,
+  `NAME` char(100) DEFAULT NULL,
   `PRICE` decimal(6,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -38,7 +38,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`PRODUCT_ID`, `NAME`, `PRICE`) VALUES
-(90807, 'PS5', '399.99');
+(90807, 'PS5', '399.99'),
+(591436, 'XBOX SERIES X', '499.99'),
+(871631, 'Cybperpunk 2077', '59.99'),
+(912621, 'Assassin\'s Creed Valhalla', '59.99'),
+(917321, 'Nintendo Switch', '249.99');
 
 -- --------------------------------------------------------
 
@@ -88,15 +92,15 @@ INSERT INTO `shopping_cart` (`SHOPPINGCART_ID`, `USER_ID`, `PRODUCT_ID`, `TOTAL`
 
 CREATE TABLE `users` (
   `USER_ID` int(5) NOT NULL,
-  `PASSWORD` varchar(10) NOT NULL,
-  `FIRST_NAME` char(15) DEFAULT NULL,
-  `LAST_NAME` char(15) DEFAULT NULL,
-  `PHONE_NUM` char(10) DEFAULT NULL,
-  `STREET` char(15) DEFAULT NULL,
-  `CITY` char(15) DEFAULT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
+  `FIRST_NAME` varchar(255) DEFAULT NULL,
+  `LAST_NAME` varchar(255) DEFAULT NULL,
+  `PHONE_NUM` varchar(255) DEFAULT NULL,
+  `STREET` varchar(255) DEFAULT NULL,
+  `CITY` varchar(255) DEFAULT NULL,
   `STATE` char(2) DEFAULT NULL,
-  `ZIP` char(5) DEFAULT NULL,
-  `EMAIL` char(30) DEFAULT NULL
+  `ZIP` char(10) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -104,7 +108,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`USER_ID`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE_NUM`, `STREET`, `CITY`, `STATE`, `ZIP`, `EMAIL`) VALUES
-(908, 'test', 'Daniel', 'Dolan', '9178856098', '552 Amboy Road', 'Staten Island', 'NY', '10309', 'test@gmail.com');
+(911, '$2y$10$nKP1pB6JmwLH2mweUYc3guYg1xeBc33jqSS42YTcGvz0xyeRYhoAS', 'hi', 'hi', '9294228163', 'hi', 'hi', 'hi', 'hi', 'hi@yahoo.com'),
+(912, '$2y$10$han4BP8HT33Y9hyezUlhfeMARHI0Jp4HsD5yS2xSy.hTe0PoPkSRK', 'hi', 'hi', '9294228163', 'hi', 'hi', 'hi', 'hi', 'hello@yahoo.com'),
+(915, '$2y$10$FsyfLDQgaYzKaLMxA3vXQ.Eiy67I/SRDjbS949a3W29mvqyQrtKb6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'andrea.atef@yahoo.com'),
+(916, '$2y$10$5znPGejMjhY8wWBZLahyjOlIT15x5nAYqwYaWNsBEdurrAv6SjLD6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'gmail@gmail.com'),
+(917, '$2y$10$Jlvr/HZ4GG2Npts4KQDfW.QJW9uHlhXp049wVc5bGWI1P6iSySLTW', 'David', 'abdelmassieh', '9294228163', '6 Benson Street', 'Staten Island', 'NY', '10312', 'davidatef238@gmail.com'),
+(918, '$2y$10$FHGLPY7DGYOix1S6hfIOhuB28sEC62xeqkvcjyxdC2jWUk1ctAVVu', 'James', 'Davis', '934293131', '2036', 'Brooklyn', 'NY', '11223', 'hey@gmail.com'),
+(919, '$2y$10$5JHSut3Ho7rTdlw24FH9aOlwMytJ5xWEcN0H5qZIvmAWVqowQ.W2q', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'hheee@gmail.com'),
+(920, '$2y$10$/61CuzyRaeF8PUm/V9wWHud2zguavJPJGxmtraLE0z11x.C0tXnai', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'test1@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -142,7 +153,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90808;
+  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=917322;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -160,7 +171,7 @@ ALTER TABLE `shopping_cart`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `USER_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=909;
+  MODIFY `USER_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=921;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
