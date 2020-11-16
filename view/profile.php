@@ -7,6 +7,25 @@ if(!isset($_SESSION['source']))
     header("Location:index.php");
     exit();
 }
+
+
+$query = "SELECT first_name, last_name, email, phone_num, street, city, state, zip FROM users WHERE user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+if($result){
+    foreach($result as $r){
+        $_SESSION['firstname'] =  $r['first_name'];
+        $_SESSION['lastname'] = $r['last_name'];
+        $_SESSION['email'] = $r['email'];
+        $_SESSION['phoneNumber'] = $r['phone_num'];
+        $_SESSION['street'] =  $r['street'];
+        $_SESSION['city'] =  $r['city'];
+        $_SESSION['state'] =  $r['state'];
+        $_SESSION['zip'] =  $r['zip'];
+    }
+}
 ?>
 
 <html lang="en" class="text-primary">
@@ -33,9 +52,14 @@ if(!isset($_SESSION['source']))
         rel="stylesheet"
         href="stylesheet/main.css"
         />
+
+        <link
+        rel="stylesheet"
+        href="stylesheet/profile.css"
+        />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>Cart</title>
+        <title>Profile</title>
     </head>
 
     <body>
@@ -43,8 +67,18 @@ if(!isset($_SESSION['source']))
         <?php include 'components/navbar.php';?>
 
         <div class="container">
-               
 
+            <img src="images/avatar.png" alt="Avatar" class="avatar">
+            <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
+                <div class="card-header">Personal Information</div>
+                <div class="card-body">
+                    <p class="card-text">First Name: <?php echo $_SESSION['firstname']; ?> </p>
+                    <p class="card-text">Last Name: <?php echo $_SESSION['lastname']; ?> </p>
+                    <p class="card-text">Email: <?php echo $_SESSION['email']; ?> </p>
+                    <p class="card-text">Phone Number: <?php echo $_SESSION['phoneNumber']; ?> </p>
+                    <p class="card-text">Address: <?php echo $_SESSION['street'].", ".$_SESSION['city'].", ".$_SESSION['state'].", ".$_SESSION['zip'] ; ?> </p>
+                </div>
+            </div>
         </div>
 
         <?php include 'components/footer.html';?>

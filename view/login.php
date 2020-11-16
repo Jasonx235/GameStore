@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+
+<?php
+include 'signin.php';
+
+if(isset($_SESSION['source']))
+{
+	header("Location:profile.php");
+	exit();
+}
+
+?>
 <html lang="en" class="text-primary">
     <head>
         <meta charset="utf-8" />
@@ -22,18 +33,30 @@
 
     <body>
         <div class="container">
-        <form id="form" action="" method="post">
+        <form id="form" action="login.php" method="post">
             <h3>Login</h3>
             <fieldset>
-                <input placeholder="Your Email Address" type="email" tabindex="2" required>
+                <input name ="email" placeholder="Your Email Address" type="email" tabindex="2" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Password" type="password" tabindex="2" required>
+                <input name ="password" placeholder="Password" type="password" tabindex="2" required>
             </fieldset>
             <fieldset>
                 <button name="submit" type="submit" id="form-submit">Login</button>
             </fieldset>
+                   <?php 
 
+			if(count($errors) > 0):
+		    ?>
+				<?php 
+					foreach($errors as $e => $message):
+				?>
+					<div class="alert alert-danger"> <?php echo $message; ?> </div>
+				<?php
+					endforeach;
+				?>
+            <?php endif; ?>
+            
             <h6><a href="index.php">Back<a></h6>
         </form>
         </div>

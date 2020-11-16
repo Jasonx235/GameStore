@@ -2,10 +2,9 @@
     $errors = [];
     session_start();
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-    //Sessions needs to be added
+    
       
       require("config.php");
-      var_dump($_POST);
 
       function cleanInput($data){ //sanitize data 
           $data = trim($data);
@@ -63,15 +62,16 @@
         $query = "INSERT INTO users(PASSWORD, FIRST_NAME, LAST_NAME, PHONE_NUM, STREET, CITY, STATE, ZIP, EMAIL) VALUES(?,?,?,?,?,?,?,?,?)";
       
         $stmt2 = $conn->prepare($query); 
-        //Order can be changed
+        
         $stmt2->bind_param('sssssssss', $password, $firstname, $lastname, $phoneNumber, $street, $city, $state, $zip, $email);
         
         if($stmt2->execute()) {
          
           $user_id = $conn->insert_id;
-          $_SESSION['id'] = $user_id;
+          $_SESSION['user_id'] = $user_id;
           $_SESSION['firstname'] = $firstname; // setting the session variables
           $_SESSION['lastname'] = $lastname;
+          $_SESSION['email'] = $email;
           $_SESSION['source'] = "signUp";
 
           header("Location:profile.php");

@@ -7,6 +7,9 @@ if(!isset($_SESSION['source']))
     header("Location:index.php");
     exit();
 }
+$query = "SELECT product_id, name, price FROM products WHERE 1";
+$result = mysqli_query($conn, $query);
+
 
 ?>
 
@@ -34,9 +37,14 @@ if(!isset($_SESSION['source']))
         rel="stylesheet"
         href="stylesheet/main.css"
         />
+
+        <link
+        rel="stylesheet"
+        href="stylesheet/products.css"
+        />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>Cart</title>
+        <title>Store</title>
     </head>
 
     <body>
@@ -45,8 +53,24 @@ if(!isset($_SESSION['source']))
 
         <div class="container">
 
-            
-
+            <div class="row">
+                <?php
+                while($row = mysqli_fetch_assoc($result))
+                {
+                ?>
+                    <a href=<?php echo "products_page.php?product_id=".$row['product_id']; ?>>
+                        <div class="col-sm-5 col-md-6">
+                            <div class="card bg-dark text_white" style="width: 18rem;">
+                                <img src="images/placeholder.png" class="card-img-top" alt="placeholder">
+                                <div class="card-body">
+                                <p class="card-text">Product: <?php echo $row['name']; ?> </p>
+                                <p class="card-text">Price: <?php echo "$".$row['price']; ?> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <?php } ?>
+            </div>
         </div>
 
         <?php include 'components/footer.html';?>

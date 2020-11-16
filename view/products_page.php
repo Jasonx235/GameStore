@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<?php
-session_start();
 
-if(isset($_GET['logout'])){
-	unset($_SESSION);
-	session_destroy();
-	session_write_close();
+<?php
+require("config.php");
+if(!isset($_SESSION['source']))
+{
+    header("Location:index.php");
+    exit();
 }
+
+if(!isset($_GET['product_id'])) {
+    header("Location:games.php");
+    exit();
+}
+
+$product_id = $_GET['product_id'];
+
+$query = "SELECT name, price FROM products WHERE product_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+if($result){
+    foreach($result as $r){
+        $_SESSION['name'] =  $r['name'];
+        $_SESSION['price'] = $r['price'];
+    }
+}
+
 ?>
+
 <html lang="en" class="text-primary">
     <head>
         <meta charset="utf-8" />
@@ -32,9 +53,13 @@ if(isset($_GET['logout'])){
         rel="stylesheet"
         href="stylesheet/main.css"
         />
+        <link
+        rel="stylesheet"
+        href="stylesheet/products_page.css"
+        />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>GameStore</title>
+        <title>Product</title>
     </head>
 
     <body>
@@ -43,26 +68,17 @@ if(isset($_GET['logout'])){
 
         <div class="container">
 
-            <h1 class="z-depth-5 d-flex justify-content-center brand w3-animate-top">GameStore</h1>
-
-            <img src="images/gamestore.jpg" alt="gamestore">
-            
-            
-            <div class="d-flex justify-content-center">
-                <?php
-                if(!isset($_SESSION['source'])) {
-                ?>
-
-                <a href="login.php" class="buttons pulse">Login</a>
-                <a href="register.php" class="buttons pulse">Sign Up</a>
-                <?php
-                } else {
-                ?>
-                <a href="games.php" class="buttons pulse">Store</a>
-                <?php
-                } ?>
+        <img src="images/placeholder.png" alt="Avatar" class="avatar">
+            <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
+                <div class="card-body">
+                    <p class="card-text">Product Name: <?php echo $_SESSION['name']; ?> </p>
+                    <p class="card-text">Price: <?php echo "$".$_SESSION['price']; ?> </p>
+                </div>
+                <div class="card-body text_white">
+                    <a href="games.php" style="color: white !important;" class="card-link">Back</a>
+                    <a href="#" style="color: white !important;" class="card-link">Add to Cart</a>
+                </div>
             </div>
-            
 
         </div>
 

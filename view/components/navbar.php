@@ -7,7 +7,7 @@
       <div class="navbar-nav ml-auto">
       <?php 
 
-       if(isset($_GET['logout'])) {
+        if(!isset($_SESSION['source'])) {
       ?>
         <a class="nav-item nav-link active" href="login.php"> Login <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" href="register.php"> Sign Up</a>
@@ -22,7 +22,7 @@
         <a <?php if (basename($_SERVER['PHP_SELF']) == 'profile.php') { echo 'class="nav-item nav-link active"'; } else { echo 'class="nav-item nav-link"'; } ?> href="profile.php"><i class="fas fa-user-alt"></i> Profile</a>
         <a <?php if (basename($_SERVER['PHP_SELF']) == 'cart.php') { echo 'class="nav-item nav-link active"'; } else { echo 'class="nav-item nav-link"'; }  ?> href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
         <a <?php if (basename($_SERVER['PHP_SELF']) == 'games.php') { echo 'class="nav-item nav-link active"'; } else { echo 'class="nav-item nav-link"'; }  ?> href="games.php"><i class="fas fa-store"></i> Store</a>
-        <a class="nav-item nav-link" href="index.php?logout=true"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        <a class="nav-item nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
 
         <?php } ?>
 
