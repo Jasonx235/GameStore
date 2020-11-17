@@ -67,7 +67,7 @@ if($result){
         <?php include 'components/navbar.php';?>
 
         <div class="container">
-
+            <h3>Profile</h3>
             <img src="images/avatar.png" alt="Avatar" class="avatar">
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-header">Personal Information</div>
