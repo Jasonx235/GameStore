@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 
 <?php
+session_start();
 require("config.php");
+include 'reviews.php';
 if(!isset($_SESSION['source']))
 {
     header("Location:index.php");
@@ -14,6 +16,7 @@ if(!isset($_GET['product_id'])) {
 }
 
 $product_id = $_GET['product_id'];
+$_SESSION['product_id'] = $product_id;
 
 $query = "SELECT name, price FROM products WHERE product_id = ?";
 $stmt = $conn->prepare($query);
@@ -26,6 +29,32 @@ if($result){
         $_SESSION['price'] = $r['price'];
     }
 }
+
+if(isset($_GET['add_to_cart'])){
+    $queryCheck = "SELECT product_id FROM shopping_cart WHERE user_id = ? AND product_id = ? LIMIT 1";
+        
+    //Checking if game is already in cart
+    $stmt = $conn->prepare($queryCheck);
+    $stmt->bind_param('ii', $_SESSION['user_id'], $product_id);
+    $stmt->execute();
+    $stmt->store_result();
+     if($stmt->num_rows>0){
+      $errors['alreadyExist'] = "Item Already in the cart!";
+    }
+    else{
+		$query = "INSERT INTO shopping_cart (user_id, product_id, total) VALUES (?,?,?)";
+		$stmt = $conn->prepare($query);
+		$stmt->bind_param("iid", $_SESSION['user_id'], $product_id,$_SESSION['price']);
+		$stmt->execute();
+		header("Location:cart.php");
+	}
+}
+
+$query = "SELECT REVIEW_INFO FROM reviews WHERE product_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $product_id);
+$stmt->execute();
+$reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
@@ -61,14 +90,11 @@ if($result){
 
         <title>Product</title>
     </head>
-
-    <body>
-
         <?php include 'components/navbar.php';?>
 
         <div class="container">
 
-        <img src="images/placeholder.png" alt="Avatar" class="avatar">
+            <img src="images/placeholder.png" alt="product" class="product">
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-body">
                     <p class="card-text">Product Name: <?php echo $_SESSION['name']; ?> </p>
@@ -76,10 +102,41 @@ if($result){
                 </div>
                 <div class="card-body text_white">
                     <a href="games.php" style="color: white !important;" class="card-link">Back</a>
-                    <a href="#" style="color: white !important;" class="card-link">Add to Cart</a>
+                    <a href=<?php echo "products_page.php?add_to_cart=true&product_id=".$product_id; ?> style="color: white !important;" class="card-link">Add to Cart</a>
                 </div>
             </div>
 
+            <?php 
+
+                if(count($errors) > 0):
+                ?>
+                    <?php 
+                        foreach($errors as $e => $message):
+                    ?>
+                        <div class="d-flex justify-content-center">
+                            <h5 class="bg-danger"><?php echo $message; ?></h5>
+                        </div>
+                    <?php
+                        endforeach;
+                    ?>
+                <?php endif; ?>
+                
+                <h5 id="review">Type a review:</h5>
+                <form id="form" action="products_page.php" method="post">
+                        <textarea class="html-text-box" type="text" name="review" required></textarea>
+                        <br>
+                        <button name="submit" type="submit" id="form-submit">Submit</button>
+                </form>
+
+                <?php if(count($reviews) > 0) { ?>
+                <h3>Reviews</h3>
+                <?php foreach($reviews as $row) { ?>
+                    <p class="review text-white bg-danger"> <?php echo $row['REVIEW_INFO']; ?> </p>
+                <?php } ?>
+                <?php } else { ?>
+                <h3 class="text-center">No reviews for this product yet.</h4>
+            <?php } ?>
+                
         </div>
 
         <?php include 'components/footer.html';?>

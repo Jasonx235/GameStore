@@ -6,4 +6,14 @@
 .card{
     margin-right: 3em;
     margin-bottom: 3em;
+    margin-left: 1.25em; 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,1);
+}
+
+h3 {
+    color: red;
+    font-size: 60px !important;
+    margin-top: 4vw !important;
+    font-weight: 400;
+    text-align: center;
 }

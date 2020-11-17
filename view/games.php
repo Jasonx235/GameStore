@@ -53,6 +53,7 @@ $result = mysqli_query($conn, $query);
 
         <div class="container">
 
+            <h3>Games and Consoles</h3>
             <div class="row">
                 <?php
                 while($row = mysqli_fetch_assoc($result))

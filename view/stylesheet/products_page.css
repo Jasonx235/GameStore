@@ -1,4 +1,4 @@
-.avatar {
+.product {
     margin: 0 auto;
     margin-top: 10em;
 }
@@ -9,4 +9,76 @@ p {
 
 .card {
     margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,1);
+}
+
+h5 {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h3 {
+    color: red;
+    font-size: 60px !important;
+    margin-top: 4vw !important;
+    font-weight: 400;
+}
+
+#review {
+    color: red;
+    font-size: 25px !important;
+    margin-top: 4vw !important;
+    font-weight: 400;
+}
+#form button[type="submit"] {
+    cursor: pointer;
+    width: 20%;
+    border: none;
+    background-color: #282828;
+    color: #FFF;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex; 
+    justify-content: center; 
+    font-size: 15px;
+    border-radius: 10px;
+
+}
+#form button[type="submit"]:hover {
+    background: red;
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+
+textarea[type=text] {
+    width: 100%;
+    padding: 20px 30px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+
+  textarea.html-text-box {
+      background-color:#ffffff;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+      border-width:1;
+      border-style:solid;
+      border-color:#cccccc;
+      font-family:Arial;
+      font-size:14pt;
+      color:#000000;}
+
+input.html-text-box {
+    background-color:#ffffff;
+    font-family:Arial;
+    font-size:14pt;
+    color:#000000;
+}
+
+.review {
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
