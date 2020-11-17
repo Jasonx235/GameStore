@@ -107,7 +107,6 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             </div>
 
             <?php 
-
                 if(count($errors) > 0):
                 ?>
                     <?php 
@@ -128,6 +127,13 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                         <button name="submit" type="submit" id="form-submit">Submit</button>
                 </form>
 
+                <?php if(isset($_SESSION['errors'])): ?>
+                    <div class="d-flex justify-content-center">
+                        <h5 class="bg-danger"> <?php echo ''.implode(" " , $_SESSION['errors']); ?></h5>
+                        <?php unset($_SESSION['errors']); ?>
+                    </div>
+                <?php endif; ?>
+
                 <?php if(count($reviews) > 0) { ?>
                 <h3>Reviews</h3>
                 <?php foreach($reviews as $row) { ?>
@@ -138,6 +144,8 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <?php } ?>
                 
         </div>
+
+        <div style="margin-bottom: 75px;"></div>
 
         <?php include 'components/footer.html';?>
 

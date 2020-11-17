@@ -18,9 +18,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $stmt->store_result();
     if($stmt->num_rows>0){
         $errors['reviewExist'] = "You already reviewed this item!";
+        $_SESSION['errors'] = $errors;
     }
     else{
-        
         $query = "INSERT INTO reviews (product_id, review_info, user_id) VALUES (?,?,?)";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("isi",$product_id, $review, $_SESSION['user_id']);

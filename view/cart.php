@@ -69,6 +69,10 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
         <div class="container">
             <h3>My Cart</h3>
+            <div class="d-flex justify-content-center">
+                <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Continue Shopping</a>
+                <a href="#" class="buttons pulse">Checkout <i class="fas fa-arrow-circle-right"></i> </a>
+            </div>
             <?php if(count($result) > 0) { ?>
                 <div class="row">
                     <?php
@@ -92,6 +96,8 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
                 <h4>No Items in the cart.</h4>
             <?php } ?>
         </div>
+
+        <div style="margin-bottom: 50px;"></div>
 
         <?php include 'components/footer.html';?>
 

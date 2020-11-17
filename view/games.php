@@ -74,6 +74,8 @@ $result = mysqli_query($conn, $query);
             </div>
         </div>
 
+        <div style="margin-bottom: 50px;"></div>
+
         <?php include 'components/footer.html';?>
 
     </body>
