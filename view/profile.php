@@ -79,6 +79,9 @@ if($result){
                     <p class="card-text">Address: <?php echo $_SESSION['street'].", ".$_SESSION['city'].", ".$_SESSION['state'].", ".$_SESSION['zip'] ; ?> </p>
                 </div>
             </div>
+            <div class="d-flex justify-content-center">
+                <a href="games.php" class="buttons pulse">Change Password</a>
+            </div>
         </div>
 
         <?php include 'components/footer.html';?>

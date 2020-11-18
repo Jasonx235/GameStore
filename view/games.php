@@ -7,9 +7,35 @@ if(!isset($_SESSION['source']))
     header("Location:index.php");
     exit();
 }
-$query = "SELECT product_id, name, price FROM products WHERE 1";
-$result = mysqli_query($conn, $query);
+$rowDisplay = 5;
 
+if(isset($_GET['page']) && is_numeric($_GET['page'])) {
+    $current_page = htmlspecialchars($_GET['page']);
+} else {
+    $current_page = 1;
+}
+
+$offset = ($current_page-1) * $rowDisplay;
+
+$count_query = "SELECT product_id FROM products";
+$stmt = $conn->prepare($count_query);
+$stmt->execute();
+$stmt->store_result();
+$results = $stmt->num_rows;
+
+if($results > $rowDisplay) {
+    $total_pages = ceil($results / $rowDisplay);
+}
+else {
+    $total_pages = 1;
+}
+
+$nextQuery = "SELECT product_id, name, price FROM products LIMIT ?, ?";
+
+$stmt = $conn->prepare($nextQuery);
+$stmt->bind_param('ii', $offset, $rowDisplay);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
@@ -55,10 +81,8 @@ $result = mysqli_query($conn, $query);
 
             <h3>Games and Consoles</h3>
             <div class="row">
-                <?php
-                while($row = mysqli_fetch_assoc($result))
-                {
-                ?>
+                <?php if(count($result) > 0) { ?>
+                   <?php foreach($result as $row) { ?>
                     <a href=<?php echo "products_page.php?product_id=".$row['product_id']; ?>>
                         <div class="col-sm-5 col-md-6">
                             <div class="card bg-dark text_white" style="width: 18rem;">
@@ -70,8 +94,18 @@ $result = mysqli_query($conn, $query);
                             </div>
                         </div>
                     </a>
+                   <?php } ?>
                 <?php } ?>
             </div>
+            <div class="d-flex justify-content-center">
+            <?php if($current_page > 1) { ?>
+                    <a href=<?php echo "games.php?page=".($current_page-1); ?> class="buttons pulse">Previous</a>
+            <?php }
+
+            if($current_page < $total_pages) { ?>
+                    <a href=<?php echo "games.php?page=".($current_page+1); ?> class="buttons pulse">Next</a>
+            <?php } ?>
+                </div>
         </div>
 
         <div style="margin-bottom: 50px;"></div>
