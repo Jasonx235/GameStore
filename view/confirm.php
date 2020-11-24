@@ -53,12 +53,16 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
         />
         <link
         rel="stylesheet"
+        href="stylesheet/confirm.css"
+        />
+        <!-- <link
+        rel="stylesheet"
         href="stylesheet/main.css"
         />
         <link
         rel="stylesheet"
         href="stylesheet/cart.css"
-        />
+        /> -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
         <title>Checkout</title>
@@ -68,43 +72,12 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
         <?php include 'components/navbar.php';?>
 
-        <div class="container">
-            <h3>Checkout</h3>
-            <div class="d-flex justify-content-center">
-                <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Return to Shopping</a>
-                <a href="confirm.php" class="buttons pulse">Confirm Checkout <i class="fas fa-arrow-circle-right"></i> </a>
-            </div>
-            <?php if(count($result) > 0) { ?>
-                <div class="row">
-                    <?php
-                    foreach($result as $row) {
-                    ?>
-                        <div class="card bg-danger text-white col-sm-4 col-md-5">
-                            <img class="card-img-top" src="images/placeholder.png" alt="placeholder">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $row['name']; ?></h5>
-                                <p class="card-text"> <?php echo $row['price']; ?></p>
-                                <?php $sumTotal=$row['price']+$sumTotal?>
-
-                            </div>
-                            <div class="card-footer">
-                                <a class ="a" href=<?php echo "cart.php?delete=true&product_id=".$row['product_id']; ?>>Remove</a>
-                            </div>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                </div>
-            <?php } else { ?>
-                echo "<script>
-                alert('There are no items added in your cart so you may not checkout. Please add items into your cart to checkout');
-                window.location.href='cart.php';
-                </script>";
-            <?php } ?>
-        </div>
-        <h1 style="text-align: center; color:red;" class=''> The sum of your total is $<?php echo $sumTotal ?> </h1>
+    
 
         <div style="margin-bottom: 50px;"></div>
+        <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seonds. </h2>
+        <?php header( "refresh:5;url=index.php" );?>
+                    
 
         <?php include 'components/footer.html';?>
 

@@ -29,6 +29,10 @@ img {
     margin-right: auto;
     width: 50%;
 }
+h2{
+    color: red;
+    text-align: right;
+}
 
 .a {
     color: black !important;
