@@ -70,10 +70,7 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
         <div class="container">
             <h3>Checkout</h3>
-            <div class="d-flex justify-content-center">
-                <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Return to Shopping</a>
-                <a href="confirm.php" class="buttons pulse">Confirm Checkout <i class="fas fa-arrow-circle-right"></i> </a>
-            </div>
+
             <?php if(count($result) > 0) { ?>
                 <div class="row">
                     <?php
@@ -101,10 +98,15 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
                 window.location.href='cart.php';
                 </script>";
             <?php } ?>
+            <h1 style="text-align: center; color:red; border: 1px solid red; padding: 5px; border-radius: 5px;" class=''> The sum of your total is $<?php echo $sumTotal ?> </h1>
+                    
+            <div class="d-flex justify-content-center">
+                <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Return to Shopping</a>
+                <a href=<?php echo "confirm.php" ?> class="buttons pulse">Confirm Checkout <i class="fas fa-arrow-circle-right"></i> </a>
+            </div>
         </div>
-        <h1 style="text-align: center; color:red;" class=''> The sum of your total is $<?php echo $sumTotal ?> </h1>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 

@@ -8,26 +8,15 @@ if(!isset($_SESSION['source']))
     exit();
 }
 
+// if(!isset($_SESSION'confirm'])) {
+//     header("Location:checkout.php");
+//     exit();
+// }
 
-$query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
-products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
-
+$query = "DELETE FROM shopping_cart WHERE user_id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->bind_param("i", $_SESSION['user_id'] );
 $stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$sumTotal=0;
-
-if(isset($_GET['delete']) && isset($_GET['product_id'])){
-
-
-	$query = "DELETE FROM shopping_cart WHERE product_id = ?";
-	$stmt = $conn->prepare($query);
-	$stmt->bind_param("i", $_GET['product_id'] );
-	$stmt->execute();
-	
-	header("Location:cart.php");
-}
 
 ?>
 
@@ -75,7 +64,7 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
     
 
         <div style="margin-bottom: 50px;"></div>
-        <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seonds. </h2>
+        <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seconds. </h2>
         <?php header( "refresh:5;url=index.php" );?>
                     
 

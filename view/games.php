@@ -7,7 +7,7 @@ if(!isset($_SESSION['source']))
     header("Location:index.php");
     exit();
 }
-$rowDisplay = 5;
+$rowDisplay = 6;
 
 if(isset($_GET['page']) && is_numeric($_GET['page'])) {
     $current_page = htmlspecialchars($_GET['page']);
@@ -108,7 +108,7 @@ $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 </div>
         </div>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 

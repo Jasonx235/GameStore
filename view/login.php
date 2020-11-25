@@ -61,6 +61,8 @@ if(isset($_SESSION['source']))
         </form>
         </div>
 
+        <div style="margin-bottom: 120px;"></div>
+
         <?php include 'components/footer.html';?>
 
     </body>

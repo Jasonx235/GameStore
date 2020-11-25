@@ -66,7 +66,7 @@ if(isset($_GET['logout'])){
 
         </div>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 

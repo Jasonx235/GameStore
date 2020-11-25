@@ -97,7 +97,7 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
             <?php } ?>
         </div>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 
