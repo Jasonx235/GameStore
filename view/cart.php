@@ -93,11 +93,11 @@ if(isset($_GET['delete']) && isset($_GET['product_id'])){
                     ?>
                 </div>
             <?php } else { ?>
-                <h4>No Items in the cart.</h4>
+                <h4> No Items in the cart.</h4>
             <?php } ?>
         </div>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 

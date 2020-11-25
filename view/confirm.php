@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<?php
-session_start();
 
-if(isset($_GET['logout'])){
-	unset($_SESSION);
-	session_destroy();
-	session_write_close();
+<?php
+require("config.php");
+if(!isset($_SESSION['source']))
+{
+    header("Location:index.php");
+    exit();
 }
+
+// if(!isset($_SESSION'confirm'])) {
+//     header("Location:checkout.php");
+//     exit();
+// }
+
+$query = "DELETE FROM shopping_cart WHERE user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id'] );
+$stmt->execute();
+
 ?>
+
 <html lang="en" class="text-primary">
     <head>
         <meta charset="utf-8" />
@@ -30,43 +42,31 @@ if(isset($_GET['logout'])){
         />
         <link
         rel="stylesheet"
+        href="stylesheet/confirm.css"
+        />
+        <!-- <link
+        rel="stylesheet"
         href="stylesheet/main.css"
         />
+        <link
+        rel="stylesheet"
+        href="stylesheet/cart.css"
+        /> -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>GameStore</title>
+        <title>Checkout</title>
     </head>
 
     <body>
 
         <?php include 'components/navbar.php';?>
 
-        <div class="container">
+    
 
-            <h1 class="z-depth-5 d-flex justify-content-center brand w3-animate-top">GameStore</h1>
-
-            <img src="images/gamestore.jpg" alt="gamestore">
-            
-            
-            <div class="d-flex justify-content-center">
-                <?php
-                if(!isset($_SESSION['source'])) {
-                ?>
-
-                <a href="login.php" class="buttons pulse">Login</a>
-                <a href="register.php" class="buttons pulse">Sign Up</a>
-                <?php
-                } else {
-                ?>
-                <a href="games.php" class="buttons pulse">Store</a>
-                <?php
-                } ?>
-            </div>
-            
-
-        </div>
-
-        <div style="margin-bottom: 120px;"></div>
+        <div style="margin-bottom: 50px;"></div>
+        <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seconds. </h2>
+        <?php header( "refresh:5;url=index.php" );?>
+                    
 
         <?php include 'components/footer.html';?>
 

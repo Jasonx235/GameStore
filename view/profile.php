@@ -80,9 +80,21 @@ if($result){
                 </div>
             </div>
             <div class="d-flex justify-content-center">
-                <a href="games.php" class="buttons pulse">Change Password</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Change Info</button>
+                    <div class="dropdown-content">
+                        <a href="changeInfo.php?change=name">Name</a>
+                        <a href="changeInfo.php?change=password">Password</a>
+                        <a href="changeInfo.php?change=email">Email</a>
+                        <a href="changeInfo.php?change=address">Address</a>
+                        <a href="changeInfo.php?change=phone">Phone Number</a>
+                    </div>
+                </div>
             </div>
+
         </div>
+
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 

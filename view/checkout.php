@@ -8,6 +8,27 @@ if(!isset($_SESSION['source']))
     exit();
 }
 
+
+$query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
+products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
+
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$sumTotal=0;
+
+if(isset($_GET['delete']) && isset($_GET['product_id'])){
+
+
+	$query = "DELETE FROM shopping_cart WHERE product_id = ?";
+	$stmt = $conn->prepare($query);
+	$stmt->bind_param("i", $_GET['product_id'] );
+	$stmt->execute();
+	
+	header("Location:cart.php");
+}
+
 ?>
 
 <html lang="en" class="text-primary">
@@ -36,7 +57,7 @@ if(!isset($_SESSION['source']))
         />
         <link
         rel="stylesheet"
-        href="stylesheet/checkout.css"
+        href="stylesheet/cart.css"
         />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -49,10 +70,43 @@ if(!isset($_SESSION['source']))
 
         <div class="container">
             <h3>Checkout</h3>
-            
+
+            <?php if(count($result) > 0) { ?>
+                <div class="row">
+                    <?php
+                    foreach($result as $row) {
+                    ?>
+                        <div class="card bg-danger text-white col-sm-4 col-md-5">
+                            <img class="card-img-top" src="images/placeholder.png" alt="placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $row['name']; ?></h5>
+                                <p class="card-text"> <?php echo $row['price']; ?></p>
+                                <?php $sumTotal=$row['price']+$sumTotal?>
+
+                            </div>
+                            <div class="card-footer">
+                                <a class ="a" href=<?php echo "cart.php?delete=true&product_id=".$row['product_id']; ?>>Remove</a>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            <?php } else { ?>
+                echo "<script>
+                alert('There are no items added in your cart so you may not checkout. Please add items into your cart to checkout');
+                window.location.href='cart.php';
+                </script>";
+            <?php } ?>
+            <h1 style="text-align: center; color:red; border: 1px solid red; padding: 5px; border-radius: 5px;" class=''> The sum of your total is $<?php echo $sumTotal ?> </h1>
+                    
+            <div class="d-flex justify-content-center">
+                <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Return to Shopping</a>
+                <a href=<?php echo "confirm.php" ?> class="buttons pulse">Confirm Checkout <i class="fas fa-arrow-circle-right"></i> </a>
+            </div>
         </div>
 
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
 
