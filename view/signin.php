@@ -37,14 +37,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $user = $return->fetch_assoc();
         
         //Verifying Email
-        if(password_verify($password, $user['password'])){ 
+        if(!$user) {
+            $errors['login'] = "Invalid Credentials";
+        }
+        else if(password_verify($password, $user['password'])){ 
             $user_id = $user['user_id'];
             $_SESSION['user_id'] = $user_id;
             $_SESSION['email'] = $email;
             $_SESSION['source'] = "logIn";
             header("Location:profile.php");  
         }
-        else{
+        else {
             $errors['login'] = "Invalid Credentials";
         }
     }

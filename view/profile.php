@@ -8,6 +8,11 @@ if(!isset($_SESSION['source']))
     exit();
 }
 
+if(isset($_SESSION['guest'])) {
+    header("Location:games.php");
+    exit();
+}
+
 
 $query = "SELECT first_name, last_name, email, phone_num, street, city, state, zip FROM users WHERE user_id = ?";
 $stmt = $conn->prepare($query);
@@ -24,6 +29,17 @@ if($result){
         $_SESSION['city'] =  $r['city'];
         $_SESSION['state'] =  $r['state'];
         $_SESSION['zip'] =  $r['zip'];
+    }
+}
+
+$pic = "SELECT picture_path FROM pictures WHERE user_id = ?";
+$stmt = $conn->prepare($pic);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+if($result){
+    foreach($result as $r){
+        $picPath = $r["picture_path"];
     }
 }
 ?>
@@ -68,7 +84,7 @@ if($result){
 
         <div class="container">
             <h3>Profile</h3>
-            <img src="images/avatar.png" alt="Avatar" class="avatar">
+            <img src=<?php echo $picPath ?> alt="Avatar" class="avatar">
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-header">Personal Information</div>
                 <div class="card-body">
@@ -80,6 +96,7 @@ if($result){
                 </div>
             </div>
             <div class="d-flex justify-content-center">
+                <a class="profilepic" href="profilePic.php">Change Profile Picture</a>
                 <div class="dropdown">
                     <button class="dropbtn">Change Info</button>
                     <div class="dropdown-content">

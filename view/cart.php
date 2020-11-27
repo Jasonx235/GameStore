@@ -2,20 +2,30 @@
 
 <?php
 require("config.php");
-if(!isset($_SESSION['source']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
     exit();
 }
 
+//HERE!!!!!!!!!!!!
+if(isset($_SESSION['guest'])) {
+    $query = "SELECT name, price FROM products WHERE product_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $_SESSION['cart']);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+else{
+    $query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
+    products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
 
-$query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
-products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
 
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
