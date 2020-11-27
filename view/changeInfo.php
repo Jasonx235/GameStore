@@ -7,6 +7,11 @@ if(!isset($_SESSION['source']))
     exit();
 }
 
+if(isset($_SESSION['guest'])) {
+    header("Location:games.php");
+    exit();
+}
+
 if(!isset($_GET['change']))
 {
     header("Location:profile.php");

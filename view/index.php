@@ -52,9 +52,10 @@ if(isset($_GET['logout'])){
                 <?php
                 if(!isset($_SESSION['source'])) {
                 ?>
-
                 <a href="login.php" class="buttons pulse">Login</a>
                 <a href="register.php" class="buttons pulse">Sign Up</a>
+                <a href="guest.php?guest=true" class="buttons pulse">Guest</a>
+                </div>
                 <?php
                 } else {
                 ?>

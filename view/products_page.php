@@ -4,7 +4,7 @@
 session_start();
 require("config.php");
 include 'reviews.php';
-if(!isset($_SESSION['source']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
     exit();
@@ -30,24 +30,48 @@ if($result){
     }
 }
 
-if(isset($_GET['add_to_cart'])){
-    $queryCheck = "SELECT product_id FROM shopping_cart WHERE user_id = ? AND product_id = ? LIMIT 1";
-        
-    //Checking if game is already in cart
-    $stmt = $conn->prepare($queryCheck);
-    $stmt->bind_param('ii', $_SESSION['user_id'], $product_id);
-    $stmt->execute();
-    $stmt->store_result();
-     if($stmt->num_rows>0){
-      $errors['alreadyExist'] = "Item Already in the cart!";
+if(isset($_SESSION['guest'])) {
+
+    if(isset($_GET['add_to_cart'])){
+
+        $product_id = htmlspecialchars($_GET['product_id']);
+
+        if(!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
+
+        if(!in_array($product_id, $_SESSION['cart'])) {
+            $_SESSION['cart'][$product_id] = $product_id;
+            header("Location:cart.php");
+        }
+        else {
+            $errors['alreadyExist'] = "Item Already in the cart!";
+
+        }
     }
-    else{
-		$query = "INSERT INTO shopping_cart (user_id, product_id, total) VALUES (?,?,?)";
-		$stmt = $conn->prepare($query);
-		$stmt->bind_param("iid", $_SESSION['user_id'], $product_id,$_SESSION['price']);
-		$stmt->execute();
-		header("Location:cart.php");
-	}
+
+}
+else {
+
+    if(isset($_GET['add_to_cart'])){
+        $queryCheck = "SELECT product_id FROM shopping_cart WHERE user_id = ? AND product_id = ? LIMIT 1";
+            
+        //Checking if game is already in cart
+        $stmt = $conn->prepare($queryCheck);
+        $stmt->bind_param('ii', $_SESSION['user_id'], $product_id);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows>0){
+        $errors['alreadyExist'] = "Item Already in the cart!";
+        }
+        else{
+            $query = "INSERT INTO shopping_cart (user_id, product_id, total) VALUES (?,?,?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("iid", $_SESSION['user_id'], $product_id,$_SESSION['price']);
+            $stmt->execute();
+            header("Location:cart.php");
+        }
+    }
 }
 
 $query = "SELECT REVIEW_INFO FROM reviews WHERE product_id = ?";
@@ -120,19 +144,23 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     ?>
                 <?php endif; ?>
                 
-                <h5 id="review">Type a review:</h5>
-                <form id="form" action="products_page.php" method="post">
-                        <textarea class="html-text-box" type="text" name="review" required></textarea>
-                        <br>
-                        <button name="submit" type="submit" id="form-submit">Submit</button>
-                </form>
+                <?php if(!isset($_SESSION['guest'])) { ?>
+                    <h5 id="review">Type a review:</h5>
+                    <form id="form" action="products_page.php" method="post">
+                            <textarea class="html-text-box" type="text" name="review" required></textarea>
+                            <br>
+                            <button name="submit" type="submit" id="form-submit">Submit</button>
+                    </form>
 
-                <?php if(isset($_SESSION['errors'])): ?>
-                    <div class="d-flex justify-content-center">
-                        <h5 class="bg-danger"> <?php echo ''.implode(" " , $_SESSION['errors']); ?></h5>
-                        <?php unset($_SESSION['errors']); ?>
-                    </div>
-                <?php endif; ?>
+                    <?php if(isset($_SESSION['errors'])): ?>
+                        <div class="d-flex justify-content-center">
+                            <h5 class="bg-danger"> <?php echo ''.implode(" " , $_SESSION['errors']); ?></h5>
+                            <?php unset($_SESSION['errors']); ?>
+                        </div>
+                    <?php endif; ?>
+                <?php } else { ?>
+                    <h3 style="text-align: center;">You must be logged in to review!</h3>
+                <?php } ?>
 
                 <?php if(count($reviews) > 0) { ?>
                 <h3>Reviews</h3>

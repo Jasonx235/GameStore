@@ -2,7 +2,7 @@
 
 <?php
 require("config.php");
-if(!isset($_SESSION['source']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
     exit();
