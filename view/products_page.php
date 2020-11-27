@@ -41,7 +41,7 @@ if(isset($_SESSION['guest'])) {
         }
 
         if(!in_array($product_id, $_SESSION['cart'])) {
-            $_SESSION['cart'][$product_id] = $product_id;
+            $_SESSION['cart'][] = (int)$product_id;
             header("Location:cart.php");
         }
         else {

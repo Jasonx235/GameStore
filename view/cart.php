@@ -10,11 +10,31 @@ if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 
 //HERE!!!!!!!!!!!!
 if(isset($_SESSION['guest'])) {
-    $query = "SELECT name, price FROM products WHERE product_id = ?";
+    $query = "SELECT product_id, name, price FROM products WHERE 1";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $_SESSION['cart']);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $guest = $_SESSION["cart"];
+    $cart = array();
+   
+    if($result){
+        foreach($result as $r){
+            foreach($guest as $g){
+            if($r["product_id"] === $g){
+                $cart[] = array("product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
+            }
+            }
+        }
+    }
+    $result = $cart;
+
+    //NEED to work on delete
+    if(isset($_GET['delete']) && isset($_GET['product_id'])){
+        var_dump($result);
+        exit();
+        header("Location:cart.php");
+    }
 }
 else{
     $query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
@@ -23,20 +43,22 @@ else{
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    if(isset($_GET['delete']) && isset($_GET['product_id'])){
+
+
+        $query = "DELETE FROM shopping_cart WHERE product_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $_GET['product_id'] );
+        $stmt->execute();
+        
+        header("Location:cart.php");
+    }
 }
 
 
 
-if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
-
-	$query = "DELETE FROM shopping_cart WHERE product_id = ?";
-	$stmt = $conn->prepare($query);
-	$stmt->bind_param("i", $_GET['product_id'] );
-	$stmt->execute();
-	
-	header("Location:cart.php");
-}
 
 ?>
 
