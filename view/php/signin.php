@@ -41,11 +41,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $errors['login'] = "Invalid Credentials";
         }
         else if(password_verify($password, $user['password'])){ 
+
             $user_id = $user['user_id'];
             $_SESSION['user_id'] = $user_id;
             $_SESSION['email'] = $email;
+
+            $adminQuery = "SELECT admin FROM users WHERE user_id = ?";
+            $stmt = $conn->prepare($adminQuery);
+            $stmt->bind_param('i', $_SESSION['user_id']);
+            $stmt->execute();
+            $isAdmin = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $_SESSION['isAdmin'] = $isAdmin;
             $_SESSION['source'] = "logIn";
-            header("Location:profile.php");  
+            header("Location:../profile.php");  
         }
         else {
             $errors['login'] = "Invalid Credentials";

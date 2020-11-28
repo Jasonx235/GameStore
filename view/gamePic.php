@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <?php
+
+$errors = [];
 session_start();
 require("php/config.php");
-$errors = [];
-if(!isset($_SESSION['source']))
-{
+
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) {
     header("Location:index.php");
     exit();
 }
@@ -13,6 +14,19 @@ if(isset($_SESSION['guest'])) {
     exit();
 }
 
+if(isset($_SESSION['isAdmin'])) {
+    if($_SESSION['isAdmin'] == false) {
+        header("Location:games.php");
+        exit();
+    }
+}
+
+if(!isset($_SESSION['product_id'])) {
+    header("Location:games.php");
+    exit();
+}
+
+
 if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){
 
     $save_dir = "images/";
@@ -20,9 +34,6 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
     
     $fileType = pathinfo($target,PATHINFO_EXTENSION);
     $allowedFormat = array("jpg", "JPG", "png", "gif");
-
-    // var_dump($_FILES);
-    // exit();
 
     if(!in_array($fileType, $allowedFormat)){
         $errors['format'] = "Format Not Allowed!";
@@ -44,25 +55,27 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
         }
     }
     if(count($errors) === 0) {
-        $query = "SELECT picture_path FROM pictures WHERE user_id = ?";
+        $query = "SELECT picture_path FROM pictures WHERE product_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param('i', $_SESSION['user_id']);
+        $stmt->bind_param('i', $_SESSION['product_id']);
         $stmt->execute();
         $stmt->store_result();
         if($stmt->num_rows>0){
-            $query = "UPDATE pictures SET picture_path= ? WHERE user_id = ?";
+            $query = "UPDATE pictures SET picture_path= ? WHERE product_id = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('si', $target, $_SESSION['user_id']);
+            $stmt->bind_param('si', $target, $_SESSION['product_id']);
             if($stmt->execute()){
-                header("Location:profile.php");
+                unset($_SESSION['product_id']);
+                header("Location:games.php");
             }
         }
         else{
-            $query = "INSERT INTO pictures (picture_path, user_id) VALUES (?, ?)";
+            $query = "INSERT INTO pictures (picture_path, product_id) VALUES (?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('si', $target, $_SESSION['user_id']);
+            $stmt->bind_param('si', $target, $_SESSION['product_id']);
             if($stmt->execute()){
-                header("Location:profile.php");
+                unset($_SESSION['product_id']);
+                header("Location:games.php");
             }
         }
     }
@@ -100,11 +113,11 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
         />
         <link
         rel="stylesheet"
-        href="stylesheet/profilePic.css"
+        href="stylesheet/addgame.css"
         />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>Profile Picture</title>
+        <title>Upload Game Picture</title>
     </head>
 
     <body>
@@ -112,32 +125,31 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
         <?php include 'components/navbar.php';?>
 
         <div class="container">
+        <h3>Game Picture</h3>
+        <form id="form" action="gamePic.php" method="post" enctype="multipart/form-data">   
+        
+            <fieldset>
+                <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+                <label for="photo">Upload a Photo</label>
+                <input type="file" name="photo" id="photo" value="" />
+            <fieldset>
+            <fieldset>
+                <input type="submit" name="uploadPic" value="Upload" id="form-submit"/>
+            </fieldset>
 
-            <h3>Upload Profile Picture</h3>
-            <form action="profilePic.php" id="form" method="post" enctype="multipart/form-data">
-                <fieldset>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
-                    <label for="photo">Upload a Photo</label>
-                    <input type="file" name="photo" id="photo" value="" />
-                </fieldset>
-                <fieldset>
-                    <input type="submit" name="uploadPic" value="Upload" id="form-submit"/>
-                </fieldset>
-            </form>
-            
             <?php if(count($errors) > 0):
                 ?>
                     <div class="d-flex justify-content-center">
                         <h5 class="bg-danger"><?php echo ''.implode(" " , $errors); ?></h5>
                     </div>
                 <?php endif; ?>
-
+        
+        </form>
         </div>
 
         <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
-
     </body>
 
 

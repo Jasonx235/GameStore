@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-require("config.php");
+require("php/config.php");
 if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
@@ -30,12 +30,18 @@ else {
     $total_pages = 1;
 }
 
+
 $nextQuery = "SELECT product_id, name, price FROM products LIMIT ?, ?";
 
 $stmt = $conn->prepare($nextQuery);
 $stmt->bind_param('ii', $offset, $rowDisplay);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+$picQuery = "SELECT picture_path FROM pictures WHERE user_id IS NULL";
+$stmt = $conn->prepare($picQuery);
+$stmt->execute();
+$pics = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
@@ -76,6 +82,16 @@ $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <body>
 
         <?php include 'components/navbar.php';?>
+
+        <?php if(isset($_SESSION['isAdmin'])) {
+
+        if($_SESSION['isAdmin'] == true) {
+            ?>
+            <div class="float-right">
+                <a href="addgame.php" class="buttons pulse"> Add Game</a>
+            </div>
+        <?php   }
+        } ?>
 
         <div class="container">
 

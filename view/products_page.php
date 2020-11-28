@@ -2,8 +2,8 @@
 
 <?php
 session_start();
-require("config.php");
-include 'reviews.php';
+require("php/config.php");
+include 'php/reviews.php';
 if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");

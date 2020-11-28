@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-require("config.php");
+require("php/config.php");
 if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
@@ -65,6 +65,10 @@ $stmt->execute();
 
         <div style="margin-bottom: 50px;"></div>
         <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seconds. </h2>
+        <?php 
+        unset($_SESSION['guest']); 
+        unset($_SESSION['cart']); 
+        ?>
         <?php header( "refresh:5;url=index.php" );?>
                     
 

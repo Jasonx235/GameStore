@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <?php
-session_start();
 
-if(isset($_GET['logout'])){
-	unset($_SESSION);
-	session_destroy();
-	session_write_close();
+include 'php/adminAdd.php';
+$errors = [];
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+{
+    header("Location:index.php");
+    exit();
 }
+if(isset($_SESSION['guest'])) {
+    header("Location:games.php");
+    exit();
+}
+
+if(isset($_SESSION['isAdmin'])) {
+    if($_SESSION['isAdmin'] == false) {
+        header("Location:games.php");
+        exit();
+    }
+}
+
+
 ?>
 <html lang="en" class="text-primary">
     <head>
@@ -32,9 +46,17 @@ if(isset($_GET['logout'])){
         rel="stylesheet"
         href="stylesheet/main.css"
         />
+        <link
+        rel="stylesheet"
+        href="stylesheet/profile.css"
+        />
+        <link
+        rel="stylesheet"
+        href="stylesheet/addgame.css"
+        />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <title>GameStore</title>
+        <title>Add New game</title>
     </head>
 
     <body>
@@ -42,35 +64,32 @@ if(isset($_GET['logout'])){
         <?php include 'components/navbar.php';?>
 
         <div class="container">
+        <h3>Add New Game</h3>
+        <form id="form" action="addgame.php" method="post">   
+        <fieldset>
+                <input name ="name" placeholder="Game Name" type="text" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+                <input name ="price" placeholder="Price" type="number" step="any" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+                <button name="submit" type="submit" id="form-submit">Add</button>
+            </fieldset>
 
-            <h1 class="z-depth-5 d-flex justify-content-center brand w3-animate-top">GameStore</h1>
-
-            <img src="images/gamestore.jpg" alt="gamestore">
+                <?php if(isset($_SESSION['errors'])): ?>
+                    <div class="d-flex justify-content-center">
+                        <h5 class="bg-danger text-white"> <?php echo ''.implode(" " , $_SESSION['errors']); ?></h5>
+                        <?php unset($_SESSION['errors']); ?>
+                    </div>
+                <?php endif; ?>
             
-            
-            <div class="d-flex justify-content-center">
-                <?php
-                if(!isset($_SESSION['source'])) {
-                ?>
-                <a href="login.php" class="buttons pulse">Login</a>
-                <a href="register.php" class="buttons pulse">Sign Up</a>
-                <a href="php/guest.php?guest=true" class="buttons pulse">Guest</a>
-                </div>
-                <?php
-                } else {
-                ?>
-                <a href="games.php" class="buttons pulse">Store</a>
-                <?php
-                } ?>
-            </div>
-            
-
+            <h6><a href="games.php">Back<a></h6>
+        </form>
         </div>
 
         <div style="margin-bottom: 120px;"></div>
 
         <?php include 'components/footer.html';?>
-
     </body>
 
 

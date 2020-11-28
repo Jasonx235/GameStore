@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-include 'changeInfoLogic.php';
+include 'php/changeInfoLogic.php';
 if(!isset($_SESSION['source']))
 {
     header("Location:index.php");

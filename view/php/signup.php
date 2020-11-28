@@ -73,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $_SESSION['email'] = $email;
       $_SESSION['source'] = "signUp";
 
-      header("Location:profile.php");
+      header("Location:../profile.php");
           
     }
     else {

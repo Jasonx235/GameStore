@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-require("config.php");
+require("php/config.php");
 if(!isset($_SESSION['source']))
 {
     header("Location:index.php");

@@ -1,32 +1,70 @@
 <!DOCTYPE html>
 
 <?php
-require("config.php");
+require("php/config.php");
+$sumTotal = 0;
 if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
     exit();
 }
 
+//HERE!!!!!!!!!!!!
+if(isset($_SESSION['guest'])) {
+    $query = "SELECT product_id, name, price FROM products WHERE 1";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-$query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
-products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
+    if(isset($_SESSION['cart'])) {
+        $guest = $_SESSION["cart"];
+        $cart = array();
+    
+        if($result){
+            foreach($result as $r){
+                foreach($guest as $g){
+                    if($r["product_id"] === $g){
+                        $cart[] = array("product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
+                    }
+                }
+            }
+        }
+        $result = $cart;
 
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$sumTotal=0;
+    
+        //NEED to work on delete
+        if(isset($_GET['delete']) && isset($_GET['product_id'])){
+            for($i = count($_SESSION['cart'])-1; $i >= 0; $i--){
+                if($_SESSION['cart'][$i] == $_GET['product_id']){
+                    unset($_SESSION['cart'][$i]);
+                }
+            }
+            header("Location:cart.php");
+        }
+    }
+}
 
-if(isset($_GET['delete']) && isset($_GET['product_id'])){
+else {
+
+    $query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
+    products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $sumTotal=0;
+
+    if(isset($_GET['delete']) && isset($_GET['product_id'])){
 
 
-	$query = "DELETE FROM shopping_cart WHERE product_id = ?";
-	$stmt = $conn->prepare($query);
-	$stmt->bind_param("i", $_GET['product_id'] );
-	$stmt->execute();
-	
-	header("Location:cart.php");
+        $query = "DELETE FROM shopping_cart WHERE product_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $_GET['product_id'] );
+        $stmt->execute();
+        
+        header("Location:cart.php");
+    }
 }
 
 ?>

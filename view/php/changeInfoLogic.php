@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   if(count($errors) > 0) {
     $_SESSION['errors'] = $errors;
-    header("Location:changeInfo.php?change=".$_SESSION['edit']);
+    header("Location:../changeInfo.php?change=".$_SESSION['edit']);
     exit();
   }
 
@@ -77,7 +77,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['firstname'] = $firstname; // setting the session variables
         $_SESSION['lastname'] = $lastname;
         
-        header("Location:profile.php");
+        header("Location:../profile.php");
             
       }
     }
@@ -89,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $stmt2->bind_param('si', $password, $_SESSION['user_id']);
       if($stmt2->execute()) {
   
-        header("Location:profile.php");
+        header("Location:../profile.php");
             
       }
     }
@@ -100,7 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $stmt2->bind_param('si', $email, $_SESSION['user_id']);
       if($stmt2->execute()) {
   
-        header("Location:profile.php");
+        header("Location:../profile.php");
             
       }
     }
@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $stmt2->bind_param('si', $phoneNumber, $_SESSION['user_id']);
       if($stmt2->execute()) {
   
-        header("Location:profile.php");
+        header("Location:../profile.php");
             
       }
     }
@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $stmt2->bind_param('ssssi', $state, $zip, $city, $street, $_SESSION['user_id']);
       if($stmt2->execute()) {
   
-        header("Location:profile.php");
+        header("Location:../profile.php");
             
       }
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 27, 2020 at 01:03 AM
+-- Generation Time: Nov 28, 2020 at 02:18 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -30,8 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `pictures` (
   `picture_path` varchar(255) DEFAULT NULL,
   `USER_ID` int(5) DEFAULT NULL,
-  `product_id` int(6) DEFAULT NULL
+  `product_id` int(6) DEFAULT NULL,
+  `picture_id` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pictures`
+--
+
+INSERT INTO `pictures` (`picture_path`, `USER_ID`, `product_id`, `picture_id`) VALUES
+('images/profile.jpg', 916, NULL, 1),
+('images/images.jpg', NULL, 917334, 5);
 
 -- --------------------------------------------------------
 
@@ -42,26 +51,28 @@ CREATE TABLE `pictures` (
 CREATE TABLE `products` (
   `PRODUCT_ID` int(6) NOT NULL,
   `NAME` char(100) DEFAULT NULL,
-  `PRICE` decimal(6,2) DEFAULT NULL
+  `PRICE` decimal(6,2) DEFAULT NULL,
+  `picture_id` int(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`PRODUCT_ID`, `NAME`, `PRICE`) VALUES
-(90807, 'PS5', '399.99'),
-(392184, 'Spider-man: Miles Morales', '49.99'),
-(463241, 'Battlefield 5', '29.99'),
-(482174, 'Destiny 2: Beyond Light', '39.99'),
-(591436, 'XBOX SERIES X', '499.99'),
-(693218, 'Bugsnax', '59.99'),
-(726421, 'Red Dead Redemption 2', '49.99'),
-(736214, 'Watch Dogs: Legion', '59.99'),
-(827134, 'Doom Eternal', '39.99'),
-(871631, 'Cybperpunk 2077', '59.99'),
-(912621, 'Assassin\'s Creed Valhalla', '59.99'),
-(917321, 'Nintendo Switch', '249.99');
+INSERT INTO `products` (`PRODUCT_ID`, `NAME`, `PRICE`, `picture_id`) VALUES
+(90807, 'PS5', '399.99', NULL),
+(392184, 'Spider-man: Miles Morales', '49.99', NULL),
+(463241, 'Battlefield 5', '29.99', NULL),
+(482174, 'Destiny 2: Beyond Light', '39.99', NULL),
+(591436, 'XBOX SERIES X', '499.99', NULL),
+(693218, 'Bugsnax', '59.99', NULL),
+(726421, 'Red Dead Redemption 2', '49.99', NULL),
+(736214, 'Watch Dogs: Legion', '59.99', NULL),
+(827134, 'Doom Eternal', '39.99', NULL),
+(871631, 'Cybperpunk 2077', '59.99', NULL),
+(912621, 'Assassin\'s Creed Valhalla', '59.99', NULL),
+(917321, 'Nintendo Switch', '249.99', NULL),
+(917334, 'Games', '29.99', 5);
 
 -- --------------------------------------------------------
 
@@ -84,7 +95,9 @@ INSERT INTO `reviews` (`REVIEW_ID`, `PRODUCT_ID`, `REVIEW_INFO`, `USER_ID`) VALU
 (14, 90807, 'The best console ever!', 916),
 (17, 591436, 'sssss', 916),
 (18, 482174, 'd', 916),
-(19, 871631, 'Very good game', 916);
+(19, 871631, 'Very good game', 916),
+(20, 917321, 'This is the best console!', 916),
+(21, 463241, 'The worst battlefield!', 916);
 
 -- --------------------------------------------------------
 
@@ -98,6 +111,13 @@ CREATE TABLE `shopping_cart` (
   `PRODUCT_ID` char(6) DEFAULT NULL,
   `TOTAL` decimal(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `shopping_cart`
+--
+
+INSERT INTO `shopping_cart` (`SHOPPINGCART_ID`, `USER_ID`, `PRODUCT_ID`, `TOTAL`) VALUES
+(91180, NULL, '463241', '29.99');
 
 -- --------------------------------------------------------
 
@@ -115,27 +135,32 @@ CREATE TABLE `users` (
   `CITY` varchar(255) DEFAULT NULL,
   `STATE` char(2) DEFAULT NULL,
   `ZIP` char(10) DEFAULT NULL,
-  `EMAIL` varchar(255) DEFAULT NULL
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `admin` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`USER_ID`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE_NUM`, `STREET`, `CITY`, `STATE`, `ZIP`, `EMAIL`) VALUES
-(911, '$2y$10$nKP1pB6JmwLH2mweUYc3guYg1xeBc33jqSS42YTcGvz0xyeRYhoAS', 'hi', 'hi', '9294228163', 'hi', 'hi', 'hi', 'hi', 'hi@yahoo.com'),
-(912, '$2y$10$han4BP8HT33Y9hyezUlhfeMARHI0Jp4HsD5yS2xSy.hTe0PoPkSRK', 'hi', 'hi', '9294228163', 'hi', 'hi', 'hi', 'hi', 'hello@yahoo.com'),
-(915, '$2y$10$FsyfLDQgaYzKaLMxA3vXQ.Eiy67I/SRDjbS949a3W29mvqyQrtKb6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'andrea.atef@yahoo.com'),
-(916, '$2y$10$5znPGejMjhY8wWBZLahyjOlIT15x5nAYqwYaWNsBEdurrAv6SjLD6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'test@gmail.com'),
-(917, '$2y$10$Jlvr/HZ4GG2Npts4KQDfW.QJW9uHlhXp049wVc5bGWI1P6iSySLTW', 'David', 'abdelmassieh', '9294228163', '6 Benson Street', 'Staten Island', 'NY', '10312', 'davidatef238@gmail.com'),
-(918, '$2y$10$FHGLPY7DGYOix1S6hfIOhuB28sEC62xeqkvcjyxdC2jWUk1ctAVVu', 'James', 'Davis', '934293131', '2036', 'Brooklyn', 'NY', '11223', 'hey@gmail.com'),
-(919, '$2y$10$5JHSut3Ho7rTdlw24FH9aOlwMytJ5xWEcN0H5qZIvmAWVqowQ.W2q', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'hheee@gmail.com'),
-(920, '$2y$10$/61CuzyRaeF8PUm/V9wWHud2zguavJPJGxmtraLE0z11x.C0tXnai', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'test1@gmail.com'),
-(921, '$2y$10$ScMQwdWTNcrKPs/LcCHUzePNBJ1tExMhJCOzcJfggpZenDTn52nsK', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'ddd@gmailc.om');
+INSERT INTO `users` (`USER_ID`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE_NUM`, `STREET`, `CITY`, `STATE`, `ZIP`, `EMAIL`, `admin`) VALUES
+(915, '$2y$10$FsyfLDQgaYzKaLMxA3vXQ.Eiy67I/SRDjbS949a3W29mvqyQrtKb6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'andrea.atef@yahoo.com', 0),
+(916, '$2y$10$5znPGejMjhY8wWBZLahyjOlIT15x5nAYqwYaWNsBEdurrAv6SjLD6', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'test@gmail.com', 1),
+(917, '$2y$10$Jlvr/HZ4GG2Npts4KQDfW.QJW9uHlhXp049wVc5bGWI1P6iSySLTW', 'David', 'abdelmassieh', '9294228163', '6 Benson Street', 'Staten Island', 'NY', '10312', 'davidatef238@gmail.com', 0),
+(918, '$2y$10$FHGLPY7DGYOix1S6hfIOhuB28sEC62xeqkvcjyxdC2jWUk1ctAVVu', 'James', 'Davis', '934293131', '2036', 'Brooklyn', 'NY', '11223', 'hey@gmail.com', 0),
+(919, '$2y$10$5JHSut3Ho7rTdlw24FH9aOlwMytJ5xWEcN0H5qZIvmAWVqowQ.W2q', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'hheee@gmail.com', 0),
+(920, '$2y$10$/61CuzyRaeF8PUm/V9wWHud2zguavJPJGxmtraLE0z11x.C0tXnai', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'test1@gmail.com', 0),
+(921, '$2y$10$ScMQwdWTNcrKPs/LcCHUzePNBJ1tExMhJCOzcJfggpZenDTn52nsK', 'Andrea', 'Habib', '9294228163', '6 BENSON ST FL 2', 'STATEN ISLAND', 'NY', '10312', 'ddd@gmailc.om', 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `pictures`
+--
+ALTER TABLE `pictures`
+  ADD PRIMARY KEY (`picture_id`);
 
 --
 -- Indexes for table `products`
@@ -166,22 +191,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `pictures`
+--
+ALTER TABLE `pictures`
+  MODIFY `picture_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=917322;
+  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=917335;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `REVIEW_ID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `REVIEW_ID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `SHOPPINGCART_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91180;
+  MODIFY `SHOPPINGCART_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91185;
 
 --
 -- AUTO_INCREMENT for table `users`

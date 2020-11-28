@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-require("config.php");
+require("php/config.php");
 if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 {
     header("Location:index.php");
@@ -9,32 +9,40 @@ if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 }
 
 //HERE!!!!!!!!!!!!
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest']) && isset($_SESSION['cart'])) {
     $query = "SELECT product_id, name, price FROM products WHERE 1";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-    $guest = $_SESSION["cart"];
-    $cart = array();
-   
-    if($result){
-        foreach($result as $r){
-            foreach($guest as $g){
-            if($r["product_id"] === $g){
-                $cart[] = array("product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
-            }
+    if(isset($_SESSION['cart'])) {
+        $guest = $_SESSION["cart"];
+        $cart = array();
+    
+        if($result){
+            foreach($result as $r){
+                foreach($guest as $g){
+                    if($r["product_id"] === $g){
+                        $cart[] = array("product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
+                    }
+                }
             }
         }
-    }
-    $result = $cart;
+        $result = $cart;
 
-    //NEED to work on delete
-    if(isset($_GET['delete']) && isset($_GET['product_id'])){
-        var_dump($result);
-        exit();
+        //NEED to work on delete
+        if(isset($_GET['delete']) && isset($_GET['product_id'])){
+            for($i = count($_SESSION['cart'])-1; $i >= 0; $i--){
+                if($_SESSION['cart'][$i] == $_GET['product_id']){
+                    unset($_SESSION['cart'][$i]);
+                }
+            }
         header("Location:cart.php");
     }
+
+    }
+
+     
 }
 else{
     $query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
