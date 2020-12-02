@@ -53,6 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $isAdmin = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             $_SESSION['isAdmin'] = $isAdmin;
             $_SESSION['source'] = "logIn";
+            unset($_SESSION['guest']);
             header("Location:../profile.php");  
         }
         else {

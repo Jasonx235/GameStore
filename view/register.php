@@ -46,12 +46,14 @@ if(isset($_SESSION['source']))
                 <input name="email" placeholder="Your Email Address" type="email" tabindex="3" required>
             </fieldset>
             <fieldset>
+                <small class="form-text text-muted">xxx.xxx.xxxx or xxx-xxx-xxxx</small>
                 <input name="phoneNumber" placeholder="Your Phone Number" type="tel" tabindex="4" required>
             </fieldset>
             <fieldset>
                 <input name="password" placeholder="Password" type="password" tabindex="5" required>
+                <small class="form-text text-muted">Minimum eight characters, at least one letter, one number and one special character</small>
             </fieldset>
-            <small class="form-text text-muted">Minimum eight characters, at least one letter, one number and one special character</small>
+            
             <fieldset>
                 <input name="passwordCHECK" placeholder="Retype password" type="password" tabindex="6" required>
             </fieldset>

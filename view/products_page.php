@@ -17,8 +17,8 @@ if(!isset($_GET['product_id'])) {
 
 $product_id = $_GET['product_id'];
 $_SESSION['product_id'] = $product_id;
-
-$query = "SELECT name, price FROM products WHERE product_id = ?";
+$query = "SELECT pictures.picture_path, products.name, products.price FROM products INNER JOIN pictures WHERE pictures.product_id = products.product_id AND products.product_id = ?";
+//$query = "SELECT name, price FROM products WHERE product_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -27,6 +27,7 @@ if($result){
     foreach($result as $r){
         $_SESSION['name'] =  $r['name'];
         $_SESSION['price'] = $r['price'];
+        $_SESSION['picture_path'] = $r['picture_path'];
     }
 }
 
@@ -118,7 +119,7 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
         <div class="container">
 
-            <img src="images/placeholder.png" alt="product" class="product">
+            <img src=<?php echo $_SESSION['picture_path'] ?> alt="product" class="product">
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-body">
                     <p class="card-text">Product Name: <?php echo $_SESSION['name']; ?> </p>

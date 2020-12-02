@@ -30,18 +30,15 @@ else {
     $total_pages = 1;
 }
 
+$query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products INNER JOIN pictures WHERE pictures.product_id = products.product_id LIMIT ?, ?";
 
 $nextQuery = "SELECT product_id, name, price FROM products LIMIT ?, ?";
 
-$stmt = $conn->prepare($nextQuery);
+$stmt = $conn->prepare($query);
 $stmt->bind_param('ii', $offset, $rowDisplay);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-$picQuery = "SELECT picture_path FROM pictures WHERE user_id IS NULL";
-$stmt = $conn->prepare($picQuery);
-$stmt->execute();
-$pics = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
@@ -102,7 +99,7 @@ $pics = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     <a href=<?php echo "products_page.php?product_id=".$row['product_id']; ?>>
                         <div class="col-sm-5 col-md-6">
                             <div class="card bg-dark text_white" style="width: 18rem;">
-                                <img src="images/placeholder.png" class="card-img-top" alt="placeholder">
+                                <img src=<?php echo $row['picture_path'] ?> class="card-img-top" alt="placeholder">
                                 <div class="card-body">
                                 <p class="card-text">Product: <?php echo $row['name']; ?> </p>
                                 <p class="card-text">Price: <?php echo "$".$row['price']; ?> </p>

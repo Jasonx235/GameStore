@@ -9,9 +9,8 @@ if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
     exit();
 }
 
-//HERE!!!!!!!!!!!!
 if(isset($_SESSION['guest'])) {
-    $query = "SELECT product_id, name, price FROM products WHERE 1";
+    $query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products INNER JOIN pictures ON pictures.product_id = products.product_id WHERE 1";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -24,15 +23,14 @@ if(isset($_SESSION['guest'])) {
             foreach($result as $r){
                 foreach($guest as $g){
                     if($r["product_id"] === $g){
-                        $cart[] = array("product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
+                        $cart[] = array("picture_path" => $r["picture_path"], "product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
                     }
                 }
             }
         }
         $result = $cart;
-
     
-        //NEED to work on delete
+      
         if(isset($_GET['delete']) && isset($_GET['product_id'])){
             for($i = count($_SESSION['cart'])-1; $i >= 0; $i--){
                 if($_SESSION['cart'][$i] == $_GET['product_id']){
@@ -46,8 +44,9 @@ if(isset($_SESSION['guest'])) {
 
 else {
 
-    $query = "SELECT products.product_id, products.name, products.price FROM products INNER JOIN shopping_cart ON 
-    products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?";
+    $query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products 
+    INNER JOIN pictures ON pictures.product_id = products.product_id
+    INNER JOIN shopping_cart ON products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?"; 
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $_SESSION['user_id']);
@@ -115,7 +114,7 @@ else {
                     foreach($result as $row) {
                     ?>
                         <div class="card bg-danger text-white col-sm-4 col-md-5">
-                            <img class="card-img-top" src="images/placeholder.png" alt="placeholder">
+                            <img class="card-img-top" src=<?php echo $row['picture_path'] ?> alt="placeholder">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $row['name']; ?></h5>
                                 <p class="card-text"> <?php echo $row['price']; ?></p>

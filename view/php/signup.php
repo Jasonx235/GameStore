@@ -23,6 +23,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $password = cleanInput($_POST['password']);
   $passwordCHECK = cleanInput($_POST['passwordCHECK']);
 
+  $patternPhone = "/^[1-9][0-9]{2}(\.|\-)[0-9]{3}(\.|\-)[0-9]{4}$/";
+
   //all patterns needed
   $patternPass = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
   //Minimum eight characters, at least one letter, one number and one special character:
@@ -39,6 +41,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   if(!preg_match($patternPass, $password)){
     $errors['password'] = "Password must be minimum eight characters, at least one letter, one number and one special character!";
+        
+  }
+
+  if(!preg_match($patternPhone, $phoneNumber)){
+    $errors['phoneNumber'] = "Phone Number must be in this format: xxx.xxx.xxxx or xxx-xxx-xxxx";
         
   }
 
@@ -71,6 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $_SESSION['firstname'] = $firstname; // setting the session variables
       $_SESSION['lastname'] = $lastname;
       $_SESSION['email'] = $email;
+      unset($_SESSION['guest']);
       $_SESSION['source'] = "signUp";
 
       header("Location:../profile.php");
