@@ -2,39 +2,39 @@
 
 <?php
 require("php/config.php");
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) //Checking if you are logged in or guest
 {
-    header("Location:index.php");
+    header("Location:index.php"); //send to home otherwise
     exit();
 }
 
 
-if(isset($_SESSION['guest']) && isset($_SESSION['cart'])) {
+if(isset($_SESSION['guest']) && isset($_SESSION['cart'])) { //Retrieve data for guest in the cart
     $query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products INNER JOIN pictures ON pictures.product_id = products.product_id WHERE 1";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt = $conn->prepare($query); //prepare query
+    $stmt->execute(); //execute
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // save all data
 
-    if(isset($_SESSION['cart'])) {
-        $guest = $_SESSION["cart"];
-        $cart = array();
+    if(isset($_SESSION['cart'])) { //Cart button for guest
+        $guest = $_SESSION["cart"]; //Saving cart from session into variable
+        $cart = array(); // creating new array
     
         if($result){
-            foreach($result as $r){
+            foreach($result as $r){ //Looping through and comparing what in DB compared to whats saved in guest cart
                 foreach($guest as $g){
                     if($r["product_id"] === $g){
-                        $cart[] = array("picture_path" => $r["picture_path"], "product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]);
+                        $cart[] = array("picture_path" => $r["picture_path"], "product_id" => $r["product_id"], "name" => $r["name"], "price" => $r["price"]); 
                     }
                 }
             }
         }
-        $result = $cart;
+        $result = $cart; // Saving result
 
         
-        if(isset($_GET['delete']) && isset($_GET['product_id'])){
+        if(isset($_GET['delete']) && isset($_GET['product_id'])){ // Delete button for guest
             for($i = count($_SESSION['cart'])-1; $i >= 0; $i--){
                 if($_SESSION['cart'][$i] == $_GET['product_id']){
-                    unset($_SESSION['cart'][$i]);
+                    unset($_SESSION['cart'][$i]); //Unsetting item that was removed from guest cart
                 }
             }
             header("Location:cart.php");
@@ -43,24 +43,25 @@ if(isset($_SESSION['guest']) && isset($_SESSION['cart'])) {
     } 
 }
 else{
+    //Query for logged in user
     $query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products 
     INNER JOIN pictures ON pictures.product_id = products.product_id
     INNER JOIN shopping_cart ON products.product_id = shopping_cart.product_id WHERE shopping_cart.user_id = ?"; 
 
 
 
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt = $conn->prepare($query); //prepare
+    $stmt->bind_param("i", $_SESSION['user_id']); //bind user_id
     $stmt->execute();
-    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); //save all into array
 
-    if(isset($_GET['delete']) && isset($_GET['product_id'])){
+    if(isset($_GET['delete']) && isset($_GET['product_id'])){ //delete button for logged in user
 
 
-        $query = "DELETE FROM shopping_cart WHERE product_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $_GET['product_id'] );
-        $stmt->execute();
+        $query = "DELETE FROM shopping_cart WHERE product_id = ?"; //query
+        $stmt = $conn->prepare($query); //prepare
+        $stmt->bind_param("i", $_GET['product_id'] ); //binding product_id
+        $stmt->execute(); //execute
         
         header("Location:cart.php");
     }
@@ -115,16 +116,16 @@ else{
                 <a href="games.php" class="buttons pulse"><i class="fas fa-arrow-circle-left"></i> Continue Shopping</a>
                 <a href="checkout.php" class="buttons pulse">Checkout <i class="fas fa-arrow-circle-right"></i> </a>
             </div>
-            <?php if(count($result) > 0) { ?>
+            <?php if(count($result) > 0) { ?> <!-- Looping through data to display-->
                 <div class="row">
                     <?php
                     foreach($result as $row) {
                     ?>
                         <div class="card bg-danger text-white col-sm-4 col-md-5">
-                            <img class="card-img-top" src=<?php echo $row['picture_path'] ?> alt="placeholder">
+                            <img class="card-img-top" src=<?php echo $row['picture_path'] ?> alt="placeholder"> <!-- Picture path -->
                             <div class="card-body">
-                                <h5 class="card-title"><?php echo $row['name']; ?></h5>
-                                <p class="card-text"> <?php echo $row['price']; ?></p>
+                                <h5 class="card-title"><?php echo $row['name']; ?></h5> <!-- name of product -->
+                                <p class="card-text"> <?php echo $row['price']; ?></p> <!-- price of product -->
                             </div>
                             <div class="card-footer">
                                 <a class ="a" href=<?php echo "cart.php?delete=true&product_id=".$row['product_id']; ?>>Remove</a>

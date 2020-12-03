@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 
 <?php
-require("php/config.php");
-if(!isset($_SESSION['source']))
+require("php/config.php"); //make sure config file is working properly
+if(!isset($_SESSION['source'])) //if user not logged in, go back to index
 {
     header("Location:index.php");
     exit();
 }
 
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) {//if user is a guest, go back to store
     header("Location:games.php");
     exit();
 }
 
 
-$query = "SELECT first_name, last_name, email, phone_num, street, city, state, zip FROM users WHERE user_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-if($result){
+$query = "SELECT first_name, last_name, email, phone_num, street, city, state, zip FROM users WHERE user_id = ?"; //query to display all user info
+$stmt = $conn->prepare($query); //prepare
+$stmt->bind_param("i", $_SESSION['user_id']); //bind
+$stmt->execute(); //execute
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); //store in associative array
+if($result){ //initialize the array
     foreach($result as $r){
         $_SESSION['firstname'] =  $r['first_name'];
         $_SESSION['lastname'] = $r['last_name'];
@@ -32,14 +32,14 @@ if($result){
     }
 }
 
-$pic = "SELECT picture_path FROM pictures WHERE user_id = ?";
-$stmt = $conn->prepare($pic);
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$pic = "SELECT picture_path FROM pictures WHERE user_id = ?"; //get profile picture
+$stmt = $conn->prepare($pic); //prepare
+$stmt->bind_param("i", $_SESSION['user_id']); //bind
+$stmt->execute(); //execute
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); //make a new associative array
 if($result){
     foreach($result as $r){
-        $picPath = $r["picture_path"];
+        $picPath = $r["picture_path"]; //put into new var
     }
 }
 ?>
@@ -84,10 +84,11 @@ if($result){
 
         <div class="container">
             <h3>Profile</h3>
-            <img src=<?php echo $picPath ?> alt="Avatar" class="avatar">
+            <img src=<?php echo $picPath ?> alt="Avatar" class="avatar"> <!-- display profile pic -->
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-header">Personal Information</div>
                 <div class="card-body">
+                    <!-- Display all user info -->
                     <p class="card-text">First Name: <?php echo $_SESSION['firstname']; ?> </p>
                     <p class="card-text">Last Name: <?php echo $_SESSION['lastname']; ?> </p>
                     <p class="card-text">Email: <?php echo $_SESSION['email']; ?> </p>
@@ -96,8 +97,10 @@ if($result){
                 </div>
             </div>
             <div class="d-flex justify-content-center">
+                <!-- Change profile pic -->
                 <a class="profilepic" href="profilePic.php">Change Profile Picture</a>
                 <div class="dropdown">
+                    <!-- Drop down menu to change user information -->
                     <button class="dropbtn">Change Info</button>
                     <div class="dropdown-content">
                         <a href="changeInfo.php?change=name">Name</a>

@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <?php
-session_start();
-require("php/config.php");
-$errors = [];
-if(!isset($_SESSION['source']))
+session_start(); //start session
+require("php/config.php"); //make suire config is working properly
+$errors = []; //empty errors array
+if(!isset($_SESSION['source'])) //if user is not logged in, go to index
 {
     header("Location:index.php");
     exit();
 }
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) { //if user is a guest, go back to store
     header("Location:games.php");
     exit();
 }
 
-if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){
+if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){ //button to upload game images
 
     $save_dir = "images/";
-    $target = $save_dir.basename($_FILES["photo"]['name']);
+    $target = $save_dir.basename($_FILES["photo"]['name']); //saving name
     
-    $fileType = pathinfo($target,PATHINFO_EXTENSION);
-    $allowedFormat = array("jpg", "JPG", "png", "gif");
+    $fileType = pathinfo($target,PATHINFO_EXTENSION); //saving path of image
+    $allowedFormat = array("jpg", "JPG", "png", "gif"); //checking if file is correct format
 
-    // var_dump($_FILES);
-    // exit();
-
-    if(!in_array($fileType, $allowedFormat)){
+    if(!in_array($fileType, $allowedFormat)){ //error is not correct format
         $errors['format'] = "Format Not Allowed!";
     }
-    else if(!move_uploaded_file($_FILES["photo"]["tmp_name"], $target)) {
+    else if(!move_uploaded_file($_FILES["photo"]["tmp_name"], $target)) { //error is problem uploading
         $errors['problem'] = "Problem Uploading!";
     }
-    else{
-        switch($_FILES["photo"]["error"]){
+    else{ 
+        switch($_FILES["photo"]["error"]){ //file upload errors
             case UPLOAD_ERR_INI_SIZE:
                 $errors['large1'] = "File is too large!";
             break;
@@ -43,13 +40,13 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
             break;
         }
     }
-    if(count($errors) === 0) {
-        $query = "SELECT picture_path FROM pictures WHERE user_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param('i', $_SESSION['user_id']);
-        $stmt->execute();
+    if(count($errors) === 0) { //if there are no errors allow picture path to be insert into db
+        $query = "SELECT picture_path FROM pictures WHERE user_id = ?"; //query
+        $stmt = $conn->prepare($query); //prepare
+        $stmt->bind_param('i', $_SESSION['user_id']); //bind
+        $stmt->execute(); //execute
         $stmt->store_result();
-        if($stmt->num_rows>0){
+        if($stmt->num_rows>0){ //if image already exsist replace image
             $query = "UPDATE pictures SET picture_path= ? WHERE user_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param('si', $target, $_SESSION['user_id']);
@@ -57,7 +54,7 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
                 header("Location:profile.php");
             }
         }
-        else{
+        else{ //if no image exsists save image into DB
             $query = "INSERT INTO pictures (picture_path, user_id) VALUES (?, ?)";
             $stmt = $conn->prepare($query);
             $stmt->bind_param('si', $target, $_SESSION['user_id']);
@@ -125,7 +122,7 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
                 </fieldset>
             </form>
             
-            <?php if(count($errors) > 0):
+            <?php if(count($errors) > 0): //Display error messages
                 ?>
                     <div class="d-flex justify-content-center">
                         <h5 class="bg-danger"><?php echo ''.implode(" " , $errors); ?></h5>

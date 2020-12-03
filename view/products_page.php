@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
 <?php
-session_start();
+session_start(); //Session Start 
 require("php/config.php");
 include 'php/reviews.php';
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) //Check if user is logged or quest 
 {
     header("Location:index.php");
     exit();
@@ -15,33 +15,33 @@ if(!isset($_GET['product_id'])) {
     exit();
 }
 
+//Retrieving data from data base
 $product_id = $_GET['product_id'];
 $_SESSION['product_id'] = $product_id;
 $query = "SELECT pictures.picture_path, products.name, products.price FROM products INNER JOIN pictures WHERE pictures.product_id = products.product_id AND products.product_id = ?";
-//$query = "SELECT name, price FROM products WHERE product_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 if($result){
-    foreach($result as $r){
+    foreach($result as $r){ //Save data into sessions
         $_SESSION['name'] =  $r['name'];
         $_SESSION['price'] = $r['price'];
         $_SESSION['picture_path'] = $r['picture_path'];
     }
 }
 
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) { //guest add to cart button
 
-    if(isset($_GET['add_to_cart'])){
+    if(isset($_GET['add_to_cart'])){ //sanitize input
 
         $product_id = htmlspecialchars($_GET['product_id']);
 
-        if(!isset($_SESSION['cart'])) {
+        if(!isset($_SESSION['cart'])) { //create array if not
             $_SESSION['cart'] = array();
         }
 
-        if(!in_array($product_id, $_SESSION['cart'])) {
+        if(!in_array($product_id, $_SESSION['cart'])) { //add item into session cart
             $_SESSION['cart'][] = (int)$product_id;
             header("Location:cart.php");
         }
@@ -53,6 +53,7 @@ if(isset($_SESSION['guest'])) {
 
 }
 else {
+    //Logged in user add to cart button
 
     if(isset($_GET['add_to_cart'])){
         $queryCheck = "SELECT product_id FROM shopping_cart WHERE user_id = ? AND product_id = ? LIMIT 1";
@@ -65,7 +66,7 @@ else {
         if($stmt->num_rows>0){
         $errors['alreadyExist'] = "Item Already in the cart!";
         }
-        else{
+        else{ //inserting item to DB for user
             $query = "INSERT INTO shopping_cart (user_id, product_id, total) VALUES (?,?,?)";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("iid", $_SESSION['user_id'], $product_id,$_SESSION['price']);
@@ -75,11 +76,11 @@ else {
     }
 }
 
-$query = "SELECT REVIEW_INFO FROM reviews WHERE product_id = ?";
+$query = "SELECT REVIEW_INFO FROM reviews WHERE product_id = ?"; //Retrieving reviews from DB
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $product_id);
 $stmt->execute();
-$reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); //storing reviews
 
 ?>
 
@@ -119,11 +120,11 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
         <div class="container">
 
-            <img src=<?php echo $_SESSION['picture_path'] ?> alt="product" class="product">
+            <img src=<?php echo $_SESSION['picture_path'] ?> alt="product" class="product"> <!-- Picture Path -->
             <div class="card text-center text-white bg-danger mb-3" style="max-width: 21rem;">
                 <div class="card-body">
-                    <p class="card-text">Product Name: <?php echo $_SESSION['name']; ?> </p>
-                    <p class="card-text">Price: <?php echo "$".$_SESSION['price']; ?> </p>
+                    <p class="card-text">Product Name: <?php echo $_SESSION['name']; ?> </p> <!-- Product Name -->
+                    <p class="card-text">Price: <?php echo "$".$_SESSION['price']; ?> </p> <!-- Price -->
                 </div>
                 <div class="card-body text_white">
                     <a href="games.php" style="color: white !important;" class="card-link">Back</a>
@@ -132,10 +133,10 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             </div>
 
             <?php 
-                if(count($errors) > 0):
+                if(count($errors) > 0): //displaying errors
                 ?>
                     <?php 
-                        foreach($errors as $e => $message):
+                        foreach($errors as $e => $message): 
                     ?>
                         <div class="d-flex justify-content-center">
                             <h5 class="bg-danger"><?php echo $message; ?></h5>
@@ -145,7 +146,7 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     ?>
                 <?php endif; ?>
                 
-                <?php if(!isset($_SESSION['guest'])) { ?>
+                <?php if(!isset($_SESSION['guest'])) { ?> <!-- guest cant leave reviews -->
                     <h5 id="review">Type a review:</h5>
                     <form id="form" action="products_page.php" method="post">
                             <textarea class="html-text-box" type="text" name="review" required></textarea>
@@ -166,7 +167,7 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <?php if(count($reviews) > 0) { ?>
                 <h3>Reviews</h3>
                 <?php foreach($reviews as $row) { ?>
-                    <p class="review text-white bg-danger"> <?php echo $row['REVIEW_INFO']; ?> </p>
+                    <p class="review text-white bg-danger"> <?php echo $row['REVIEW_INFO']; ?> </p> <!-- Displaying all reviews for particular game -->
                 <?php } ?>
                 <?php } else { ?>
                 <h3 class="text-center">No reviews for this product yet.</h4>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2020 at 02:18 AM
+-- Generation Time: Dec 03, 2020 at 08:32 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -40,7 +40,19 @@ CREATE TABLE `pictures` (
 
 INSERT INTO `pictures` (`picture_path`, `USER_ID`, `product_id`, `picture_id`) VALUES
 ('images/profile.jpg', 916, NULL, 1),
-('images/images.jpg', NULL, 917334, 5);
+('images/images.jpg', NULL, 917334, 5),
+('images/ps5.jpg', NULL, 90807, 6),
+('images/nintendo.jpg', NULL, 917321, 7),
+('images/acv.jpg', NULL, 912621, 8),
+('images/cp2077.jpg', NULL, 871631, 9),
+('images/doom.jpg', NULL, 827134, 10),
+('images/watchdogs.png', NULL, 736214, 11),
+('images/reddead.jpg', NULL, 726421, 12),
+('images/bugsnax.jpg', NULL, 693218, 13),
+('images/xbox.jpg', NULL, 591436, 14),
+('images/destiny.jpg', NULL, 482174, 15),
+('images/bf5.jpg', NULL, 463241, 16),
+('images/miles.jpg', NULL, 392184, 17);
 
 -- --------------------------------------------------------
 
@@ -194,13 +206,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `pictures`
 --
 ALTER TABLE `pictures`
-  MODIFY `picture_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `picture_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=917335;
+  MODIFY `PRODUCT_ID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=917336;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -212,7 +224,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `SHOPPINGCART_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91185;
+  MODIFY `SHOPPINGCART_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91188;
 
 --
 -- AUTO_INCREMENT for table `users`

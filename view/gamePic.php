@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <?php
 
-$errors = [];
-session_start();
+$errors = []; //array for errors
+session_start(); //sesion start
 require("php/config.php");
 
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) {
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) { //checking if user is logged in or guest
     header("Location:index.php");
     exit();
 }
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) { //if guest send them to games
     header("Location:games.php");
     exit();
 }
 
-if(isset($_SESSION['isAdmin'])) {
+if(isset($_SESSION['isAdmin'])) { //if not admin send to games
     if($_SESSION['isAdmin'] == false) {
         header("Location:games.php");
         exit();
     }
 }
 
-if(!isset($_SESSION['product_id'])) {
+if(!isset($_SESSION['product_id'])) { //if not product_id send to games
     header("Location:games.php");
     exit();
 }
 
 
-if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){
+if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){ //button to upload game images
 
     $save_dir = "images/";
-    $target = $save_dir.basename($_FILES["photo"]['name']);
+    $target = $save_dir.basename($_FILES["photo"]['name']); //saving name
     
-    $fileType = pathinfo($target,PATHINFO_EXTENSION);
-    $allowedFormat = array("jpg", "JPG", "png", "gif");
+    $fileType = pathinfo($target,PATHINFO_EXTENSION); //saving path of image
+    $allowedFormat = array("jpg", "JPG", "png", "gif"); //checking if file is correct format
 
-    if(!in_array($fileType, $allowedFormat)){
+    if(!in_array($fileType, $allowedFormat)){ //error is not correct format
         $errors['format'] = "Format Not Allowed!";
     }
-    else if(!move_uploaded_file($_FILES["photo"]["tmp_name"], $target)) {
+    else if(!move_uploaded_file($_FILES["photo"]["tmp_name"], $target)) { //error is problem uploading
         $errors['problem'] = "Problem Uploading!";
     }
     else{
-        switch($_FILES["photo"]["error"]){
+        switch($_FILES["photo"]["error"]){ //file upload errors
             case UPLOAD_ERR_INI_SIZE:
                 $errors['large1'] = "File is too large!";
             break;
@@ -54,13 +54,13 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
             break;
         }
     }
-    if(count($errors) === 0) {
-        $query = "SELECT picture_path FROM pictures WHERE product_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param('i', $_SESSION['product_id']);
-        $stmt->execute();
-        $stmt->store_result();
-        if($stmt->num_rows>0){
+    if(count($errors) === 0) { //if there are no errors allow picture path to be insert into db
+        $query = "SELECT picture_path FROM pictures WHERE product_id = ?"; //query
+        $stmt = $conn->prepare($query); //prepare
+        $stmt->bind_param('i', $_SESSION['product_id']); //bind param product_id
+        $stmt->execute(); //execute
+        $stmt->store_result(); //store
+        if($stmt->num_rows>0){ //if image already exsist replace image
             $query = "UPDATE pictures SET picture_path= ? WHERE product_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param('si', $target, $_SESSION['product_id']);
@@ -69,7 +69,7 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
                 header("Location:games.php");
             }
         }
-        else{
+        else{ //if no image exsists save image into DB
             $query = "INSERT INTO pictures (picture_path, product_id) VALUES (?, ?)";
             $stmt = $conn->prepare($query);
             $stmt->bind_param('si', $target, $_SESSION['product_id']);
@@ -137,7 +137,7 @@ if(isset($_FILES["photo"]["type"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK
                 <input type="submit" name="uploadPic" value="Upload" id="form-submit"/>
             </fieldset>
 
-            <?php if(count($errors) > 0):
+            <?php if(count($errors) > 0): //Display error messages
                 ?>
                     <div class="d-flex justify-content-center">
                         <h5 class="bg-danger"><?php echo ''.implode(" " , $errors); ?></h5>

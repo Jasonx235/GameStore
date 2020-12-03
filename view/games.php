@@ -2,14 +2,14 @@
 
 <?php
 require("php/config.php");
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) //checking is user logged in or guest
 {
     header("Location:index.php");
     exit();
 }
-$rowDisplay = 6;
+$rowDisplay = 6; //amount of games per page
 
-if(isset($_GET['page']) && is_numeric($_GET['page'])) {
+if(isset($_GET['page']) && is_numeric($_GET['page'])) { //getting page num through url
     $current_page = htmlspecialchars($_GET['page']);
 } else {
     $current_page = 1;
@@ -17,12 +17,14 @@ if(isset($_GET['page']) && is_numeric($_GET['page'])) {
 
 $offset = ($current_page-1) * $rowDisplay;
 
+//retriving product_id
 $count_query = "SELECT product_id FROM products";
 $stmt = $conn->prepare($count_query);
 $stmt->execute();
 $stmt->store_result();
 $results = $stmt->num_rows;
 
+//saving total amount of pages
 if($results > $rowDisplay) {
     $total_pages = ceil($results / $rowDisplay);
 }
@@ -30,14 +32,13 @@ else {
     $total_pages = 1;
 }
 
+//query to retrieve data about each product
 $query = "SELECT pictures.picture_path, products.product_id, products.name, products.price FROM products INNER JOIN pictures WHERE pictures.product_id = products.product_id LIMIT ?, ?";
-
-$nextQuery = "SELECT product_id, name, price FROM products LIMIT ?, ?";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param('ii', $offset, $rowDisplay);
 $stmt->execute();
-$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); //saving all data int array
 
 
 ?>
@@ -80,7 +81,7 @@ $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
         <?php include 'components/navbar.php';?>
 
-        <?php if(isset($_SESSION['isAdmin'])) {
+        <?php if(isset($_SESSION['isAdmin'])) { //Admin button for adding games
 
         if($_SESSION['isAdmin'] == true) {
             ?>
@@ -94,15 +95,15 @@ $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
             <h3>Games and Consoles</h3>
             <div class="row">
-                <?php if(count($result) > 0) { ?>
+                <?php if(count($result) > 0) { ?> <!-- Loop for displaying data-->
                    <?php foreach($result as $row) { ?>
-                    <a href=<?php echo "products_page.php?product_id=".$row['product_id']; ?>>
+                    <a href=<?php echo "products_page.php?product_id=".$row['product_id']; ?>> <!-- Proudct_id in url -->
                         <div class="col-sm-5 col-md-6">
                             <div class="card bg-dark text_white" style="width: 18rem;">
-                                <img src=<?php echo $row['picture_path'] ?> class="card-img-top" alt="placeholder">
+                                <img src=<?php echo $row['picture_path'] ?> class="card-img-top" alt="placeholder"> <!-- Picture Path -->
                                 <div class="card-body">
-                                <p class="card-text">Product: <?php echo $row['name']; ?> </p>
-                                <p class="card-text">Price: <?php echo "$".$row['price']; ?> </p>
+                                <p class="card-text">Product: <?php echo $row['name']; ?> </p> <!-- name of product -->
+                                <p class="card-text">Price: <?php echo "$".$row['price']; ?> </p> <!-- price of product -->
                                 </div>
                             </div>
                         </div>
@@ -112,11 +113,11 @@ $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             </div>
             <div class="d-flex justify-content-center">
             <?php if($current_page > 1) { ?>
-                    <a href=<?php echo "games.php?page=".($current_page-1); ?> class="buttons pulse">Previous</a>
+                    <a href=<?php echo "games.php?page=".($current_page-1); ?> class="buttons pulse">Previous</a> <!-- button for back -->
             <?php }
 
             if($current_page < $total_pages) { ?>
-                    <a href=<?php echo "games.php?page=".($current_page+1); ?> class="buttons pulse">Next</a>
+                    <a href=<?php echo "games.php?page=".($current_page+1); ?> class="buttons pulse">Next</a> <!-- button for foward -->
             <?php } ?>
                 </div>
         </div>

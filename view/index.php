@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-session_start();
+session_start(); //Session start
 
-if(isset($_GET['logout'])){
+if(isset($_GET['logout'])){ //logout button
 	unset($_SESSION);
 	session_destroy();
 	session_write_close();
@@ -52,14 +52,14 @@ if(isset($_GET['logout'])){
                 <?php
                 if(!isset($_SESSION['source'])) {
                 ?>
-                <a href="login.php" class="buttons pulse">Login</a>
-                <a href="register.php" class="buttons pulse">Sign Up</a>
-                <a href="php/guest.php?guest=true" class="buttons pulse">Guest</a>
+                <a href="login.php" class="buttons pulse">Login</a> <!-- Login button -->
+                <a href="register.php" class="buttons pulse">Sign Up</a> <!-- Sign Up button -->
+                <a href="php/guest.php?guest=true" class="buttons pulse">Guest</a> <!-- Guest button -->
                 </div>
                 <?php
                 } else {
                 ?>
-                <a href="games.php" class="buttons pulse">Store</a>
+                <a href="games.php" class="buttons pulse">Store</a> <!-- Store Button -->
                 <?php
                 } ?>
             </div>

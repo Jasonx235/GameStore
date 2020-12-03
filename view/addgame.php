@@ -3,23 +3,22 @@
 
 include 'php/adminAdd.php';
 $errors = [];
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) //checking if login or logined with guest privelge
 {
     header("Location:index.php");
     exit();
 }
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) { //Guest check 
     header("Location:games.php");
     exit();
 }
 
-if(isset($_SESSION['isAdmin'])) {
+if(isset($_SESSION['isAdmin'])) { //Admin check
     if($_SESSION['isAdmin'] == false) {
         header("Location:games.php");
         exit();
     }
 }
-
 
 ?>
 <html lang="en" class="text-primary">
@@ -61,9 +60,9 @@ if(isset($_SESSION['isAdmin'])) {
 
     <body>
 
-        <?php include 'components/navbar.php';?>
+        <?php include 'components/navbar.php';?> <!--Add game into database if you are admin -->
 
-        <div class="container">
+        <div class="container"> 
         <h3>Add New Game</h3>
         <form id="form" action="addgame.php" method="post">   
         <fieldset>
@@ -76,14 +75,14 @@ if(isset($_SESSION['isAdmin'])) {
                 <button name="submit" type="submit" id="form-submit">Add</button>
             </fieldset>
 
-                <?php if(isset($_SESSION['errors'])): ?>
+                <?php if(isset($_SESSION['errors'])): ?> <!-- Displaying errors-->
                     <div class="d-flex justify-content-center">
                         <h5 class="bg-danger text-white"> <?php echo ''.implode(" " , $_SESSION['errors']); ?></h5>
                         <?php unset($_SESSION['errors']); ?>
                     </div>
                 <?php endif; ?>
             
-            <h6><a href="games.php">Back<a></h6>
+            <h6><a href="games.php">Back<a></h6> <!-- Back Button -->
         </form>
         </div>
 

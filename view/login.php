@@ -3,7 +3,7 @@
 <?php
 include 'php/signin.php';
 
-if(isset($_SESSION['source']))
+if(isset($_SESSION['source'])) //Checking if user if logged in
 {
 	header("Location:profile.php");
 	exit();
@@ -31,7 +31,7 @@ if(isset($_SESSION['source']))
 
     </head>
 
-    <body>
+    <body> <!-- Input information to login -->
         <div class="container">
         <form id="form" action="login.php" method="post">
             <h3>Login</h3>
@@ -46,10 +46,10 @@ if(isset($_SESSION['source']))
             </fieldset>
                    <?php 
 
-			if(count($errors) > 0):
+			if(count($errors) > 0): //Displaying errors to user
 		    ?>
 				<?php 
-					foreach($errors as $e => $message):
+					foreach($errors as $e => $message): //looping through each messsage
 				?>
 					<div class="alert alert-danger"> <?php echo $message; ?> </div>
 				<?php

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <?php
-include 'php/changeInfoLogic.php';
+include 'php/changeInfoLogic.php'; //Checking if logged in
 if(!isset($_SESSION['source']))
 {
     header("Location:index.php");
     exit();
 }
 
-if(isset($_SESSION['guest'])) {
+if(isset($_SESSION['guest'])) { //checking if guest
     header("Location:games.php");
     exit();
 }
 
-if(!isset($_GET['change']))
+if(!isset($_GET['change'])) //change button
 {
     header("Location:profile.php");
     exit();
@@ -45,7 +45,7 @@ if(!isset($_GET['change']))
         <form id="form" action="changeInfo.php" method="POST">
             <h3>Edit Information</h3>
 
-            <?php if($_GET['change'] == "name"): ?>
+            <?php if($_GET['change'] == "name"): ?> <!-- Change button for name -->
                 <fieldset>
                     <input name="firstname" placeholder="First Name" type="text" tabindex="1" autofocus required>
                 </fieldset>
@@ -54,19 +54,19 @@ if(!isset($_GET['change']))
                 </fieldset>
                 <?php $_SESSION['edit'] = "name"; ?>
             <?php endif ?>
-            <?php if($_GET['change'] == "email"): ?>
+            <?php if($_GET['change'] == "email"): ?> <!-- Change button for email -->
                 <fieldset>
                     <input name="email" placeholder="Your Email Address" type="email" tabindex="3" required>
                 </fieldset>
                 <?php $_SESSION['edit'] = "email"; ?>
             <?php endif ?>
-            <?php if($_GET['change'] == "phone"): ?>
+            <?php if($_GET['change'] == "phone"): ?> <!-- Change buttton for phone number -->
                 <fieldset>
                     <input name="phoneNumber" placeholder="Your Phone Number" type="tel" tabindex="4" required>
                 </fieldset>
                 <?php $_SESSION['edit'] = "phone"; ?>
             <?php endif ?>
-            <?php if($_GET['change'] == "password"): ?>
+            <?php if($_GET['change'] == "password"): ?> <!-- Change button for password -->
                 <fieldset>
                     <input name="password" placeholder="Password" type="password" tabindex="5" required>
                 </fieldset>

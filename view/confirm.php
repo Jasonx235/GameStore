@@ -2,7 +2,7 @@
 
 <?php
 require("php/config.php");
-if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
+if(!isset($_SESSION['source']) && !isset($_SESSION['guest'])) //Checking if user is logged in or guest
 {
     header("Location:index.php");
     exit();
@@ -13,7 +13,7 @@ if(!isset($_SESSION['source']) && !isset($_SESSION['guest']))
 //     exit();
 // }
 
-$query = "DELETE FROM shopping_cart WHERE user_id = ?";
+$query = "DELETE FROM shopping_cart WHERE user_id = ?"; // delete all item for users shopping cart after checkout
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $_SESSION['user_id'] );
 $stmt->execute();
@@ -66,8 +66,8 @@ $stmt->execute();
         <div style="margin-bottom: 50px;"></div>
         <h2>Thank you for shopping at GamerStore, you will be redirected back to the homepage in 5 seconds. </h2>
         <?php 
-        unset($_SESSION['guest']); 
-        unset($_SESSION['cart']); 
+        unset($_SESSION['guest']); //unsetting guest
+        unset($_SESSION['cart']); //unsetting guest cart
         ?>
         <?php header( "refresh:5;url=index.php" );?>
                     
