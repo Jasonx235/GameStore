@@ -98,7 +98,7 @@ if($result){
             </div>
             <div class="d-flex justify-content-center">
                 <!-- Change profile pic -->
-                <a class="profilepic" href="profilePic.php">Change Profile Picture</a>
+                <a class="buttons" href="profilePic.php">Change Profile Picture</a>
                 <div class="dropdown">
                     <!-- Drop down menu to change user information -->
                     <button class="dropbtn">Change Info</button>
