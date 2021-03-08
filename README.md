@@ -3,7 +3,7 @@
 
 #Deployed link:
 
-http://163.238.35.165/~mui/Final_Project/view/
+https://game-store1.herokuapp.com/view/index.php
 
 ## Techstack: PHP, HTML, CSS (Bootstrap), mySQL
 
